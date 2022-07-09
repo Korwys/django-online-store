@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Zay Shop - Contact</title>
+    <title>{{title}}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -24,7 +24,7 @@
 </head>
 
 <body>
-        <!-- Start Top Nav -->
+    <!-- Start Top Nav -->
     <nav class="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block" id="templatemo_nav_top">
         <div class="container text-light">
             <div class="w-100 d-flex justify-content-between">
@@ -61,16 +61,16 @@
                 <div class="flex-fill">
                     <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="index.html">Home</a>
+                            <a class="nav-link" href="{% url 'index' %}">Главная</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="about.html">About</a>
+                            <a class="nav-link" href="{% url 'about' %}">О нас</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="shop.html">Shop</a>
+                            <a class="nav-link" href="shop.html">Каталог</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="contact.html">Contact</a>
+                            <a class="nav-link" href="{% url 'contacts' %}">Контакты</a>
                         </li>
                     </ul>
                 </div>
@@ -220,11 +220,11 @@
     <!-- End Footer -->
 
     <!-- Start Script -->
-    <script src="{%  static mainapp/js/jquery-1.11.0.min.js"></script>
-    <script src="{%  static mainapp/js/jquery-migrate-1.2.1.min.js"></script>
-    <script src="{%  static mainapp/js/bootstrap.bundle.min.js"></script>
-    <script src="{%  static mainapp/js/templatemo.js"></script>
-    <script src="{%  static mainapp/js/custom.js"></script>
+    <script src="{%  static 'mainapp/js/jquery-1.11.0.min.js' %}"></script>
+    <script src="{%  static 'mainapp/js/jquery-migrate-1.2.1.min.js' %} "></script>
+    <script src="{%  static 'mainapp/js/bootstrap.bundle.min.js' %} "></script>
+    <script src="{%  static 'mainapp/js/templatemo.js' %}"></script>
+    <script src="{%  static 'mainapp/js/custom.js' %}"></script>
     <!-- End Script -->
 
 </body>
