@@ -26,6 +26,22 @@ class ProductCategory(models.Model):
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
 
+
+class Genders(models.Model):
+    name = models.CharField(
+        verbose_name='Пол',
+        max_length=50,
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        db_table ='gender'
+        verbose_name = 'Пол'
+        verbose_name_plural = 'Пол'
+
+
 class Product(models.Model):
     category = models.ForeignKey(
         ProductCategory,
@@ -52,6 +68,12 @@ class Product(models.Model):
     quantity = models.PositiveIntegerField(
         verbose_name='Остаток',
         default=0
+    )
+
+    gender = models.ForeignKey(
+        Genders,
+        on_delete=models.CASCADE,
+        default = None
     )
 
     image = models.ImageField(
@@ -82,3 +104,4 @@ class Gallery(models.Model):
         on_delete=models.CASCADE,
 
     )
+
