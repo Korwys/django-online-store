@@ -11,6 +11,7 @@ class ProductCategory(models.Model):
     description = models.TextField(
         verbose_name='Описание',
         max_length=100,
+        blank=True,
     )
 
     is_active = models.BooleanField(
@@ -37,7 +38,7 @@ class Genders(models.Model):
         return self.name
 
     class Meta:
-        db_table ='gender'
+        db_table = 'gender'
         verbose_name = 'Пол'
         verbose_name_plural = 'Пол'
 
@@ -73,7 +74,7 @@ class Product(models.Model):
     gender = models.ForeignKey(
         Genders,
         on_delete=models.CASCADE,
-        default = None
+        default=None
     )
 
     image = models.ImageField(
@@ -90,7 +91,7 @@ class Product(models.Model):
         return f'{self.name}-{self.pk}'
 
     class Meta:
-        db_table ='products'
+        db_table = 'products'
         verbose_name = 'Товар'
         verbose_name_plural = 'Товары'
 
@@ -104,4 +105,3 @@ class Gallery(models.Model):
         on_delete=models.CASCADE,
 
     )
-

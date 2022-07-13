@@ -12,6 +12,7 @@ psycopg2 = "^2.9.3"
 postgres = "^4.0"
 Pillow = "^9.2.0"
 gender = "^0.0.33"
+products = "^1.0.0"
 
 [tool.poetry.dev-dependencies]
 
