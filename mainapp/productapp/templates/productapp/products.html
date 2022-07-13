@@ -50,12 +50,12 @@
                     </li>
                     <li class="pb-3">
                         <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">
-                            Product
+                            Product Category
                             <i class="pull-right fa fa-fw fa-chevron-circle-down mt-1"></i>
                         </a>
                         <ul id="collapseThree" class="collapse list-unstyled pl-3">
                             {% for category in categories %}
-                            <li><a class="text-decoration-none" href="#">{{category}}</a></li>
+                            <li><a class="text-decoration-none" href="{% url 'productapp:category' category.pk %}">{{category}}</a></li>
                             {% endfor%}
                         </ul>
                     </li>
@@ -67,14 +67,14 @@
                     <div class="col-md-6">
                         <ul class="list-inline shop-top-menu pb-3 pt-1">
                             <li class="list-inline-item">
-                                <a class="h3 text-dark text-decoration-none mr-3" href="#">All</a>
+                                <a class="h3 text-dark text-decoration-none mr-3" href="{% url 'productapp:gender' 0 %}">All</a>
                             </li>
+                            {% for gender in gender_choise_list%}
                             <li class="list-inline-item">
-                                <a class="h3 text-dark text-decoration-none mr-3" href="#">Men's</a>
+                                <a class="h3 text-dark text-decoration-none mr-3"
+                                   href="{% url 'productapp:gender' gender.pk %}">{{gender.name}}</a>
                             </li>
-                            <li class="list-inline-item">
-                                <a class="h3 text-dark text-decoration-none" href="#">Women's</a>
-                            </li>
+                            {% endfor %}
                         </ul>
                     </div>
                     <div class="col-md-6 pb-4">
