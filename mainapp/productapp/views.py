@@ -59,3 +59,17 @@ def category(request, pk):
         }
 
     return render(request, 'productapp/products.html', context)
+
+
+def single_product(request, pk):
+    title = 'Страница продукта'
+    product = get_object_or_404(Product, pk=pk)
+    products = Product.objects.all()
+
+    context = {
+        'title': title,
+        'product': product,
+        'products': products,
+    }
+
+    return render(request, 'productapp/single_product.html', context)
