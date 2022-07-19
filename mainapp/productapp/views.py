@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from productapp.models import Product, ProductCategory, Genders
 
@@ -19,18 +20,27 @@ def products(request, pk=None):
             for item in products:
                 if item.category not in categories:
                     categories.append(item.category)
+
+        paginator = Paginator(products, 6)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
         context = {
             'gender': gender,
-            'products': products,
+            'products': page_obj,
             'gender_choise_list': gender_choise_list,
             'categories': categories,
         }
         return render(request, 'productapp/products.html', context)
 
     products = Product.objects.all()
+    paginator = Paginator(products, 6)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
         'title': title,
-        'products': products,
+        'products': page_obj,
         'gender_choise_list': gender_choise_list,
         'categories': categories,
     }
@@ -57,7 +67,6 @@ def category(request, pk):
             'gender_choise_list': gender_choise_list,
             'categories': categories,
         }
-
     return render(request, 'productapp/products.html', context)
 
 
@@ -71,5 +80,4 @@ def single_product(request, pk):
         'product': product,
         'products': products,
     }
-
     return render(request, 'productapp/single_product.html', context)
