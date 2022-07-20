@@ -7,4 +7,5 @@ urlpatterns = [
     path('gender/<int:pk>/', products, name='gender'),
     path('category/<int:pk>/', category, name='category'),
     path('single-product/<int:pk>', single_product, name='single_product'),
+
 ]

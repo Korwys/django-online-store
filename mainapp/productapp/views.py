@@ -4,37 +4,47 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from productapp.models import Product, ProductCategory, Genders
 
 
+def gender(request, pk=None):
+    pass
+
+
 def products(request, pk=None):
     title = 'Каталог'
     gender_choise_list = Genders.objects.all()
     categories = ProductCategory.objects.all()
+    category_from_request = 0
 
-    if pk is not None:
-        if pk == 0:
-            products = Product.objects.all()
-            gender = {'name': 'All'}
-        else:
-            gender = get_object_or_404(Genders, pk=pk)
-            products = Product.objects.filter(gender__pk=pk)
-            categories = []
-            for item in products:
-                if item.category not in categories:
-                    categories.append(item.category)
+    if 'category' in request.META.get('HTTP_REFERER'):
+        category_from_request = request.META.get('HTTP_REFERER')[-2]
+        gender = get_object_or_404(Genders, pk=pk)
+        products = Product.objects.filter(gender__pk=pk, category__pk=category_from_request)
+    else:
+        if pk is not None:
+            if pk == 0:
+                products = Product.objects.all()
+                gender = {'name': 'All'}
+            else:
+                gender = get_object_or_404(Genders, pk=pk)
+                products = Product.objects.filter(gender__pk=pk)
+                categories = []
+                for item in products:
+                    if item.category not in categories:
+                        categories.append(item.category)
 
-        paginator = Paginator(products, 6)
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
+            paginator = Paginator(products, 6)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
 
-        context = {
-            'gender': gender,
-            'products': page_obj,
-            'gender_choise_list': gender_choise_list,
-            'categories': categories,
-        }
-        return render(request, 'productapp/products.html', context)
+            context = {
+                'gender': gender,
+                'products': page_obj,
+                'gender_choise_list': gender_choise_list,
+                'categories': categories,
+            }
+            return render(request, 'productapp/products.html', context)
 
-    products = Product.objects.all()
-    paginator = Paginator(products, 6)
+    paginator_products = sorting(request)
+    paginator = Paginator(paginator_products, 6)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -44,15 +54,16 @@ def products(request, pk=None):
         'gender_choise_list': gender_choise_list,
         'categories': categories,
     }
+
     return render(request, 'productapp/products.html', context)
 
 
 def category(request, pk):
     gender_choise_list = Genders.objects.all()
     categories = ProductCategory.objects.all()
-    gender_id = request.META.get('HTTP_REFERER')[-2]
 
-    if gender_id.isnumeric():
+    if 'gender' in request.META.get('HTTP_REFERER'):
+        gender_id = request.META.get('HTTP_REFERER')[-2]
         products = Product.objects.filter(category__pk=pk, gender__pk=gender_id)
         context = {
             'products': products,
@@ -60,14 +71,19 @@ def category(request, pk):
             'categories': categories,
         }
         return render(request, 'productapp/products.html', context)
+
     else:
-        products = Product.objects.filter(category__pk=pk)
+        if request.GET.get('page'):
+            products = sorting(request,pk)
+        else:
+            products = Product.objects.filter(category__pk=pk)
+
         context = {
             'products': products,
             'gender_choise_list': gender_choise_list,
             'categories': categories,
         }
-    return render(request, 'productapp/products.html', context)
+        return render(request, 'productapp/products.html', context)
 
 
 def single_product(request, pk):
@@ -81,3 +97,21 @@ def single_product(request, pk):
         'products': products,
     }
     return render(request, 'productapp/single_product.html', context)
+
+
+def sorting(request, pk=None):
+    sorting_types = {
+        'name': 'name',
+        'name_desc': '-name',
+        'price': 'price',
+        'price_desc': '-price'
+    }
+    get_sorting_type = request.GET.get('page')
+
+    if get_sorting_type and pk:
+        return Product.objects.filter(category__pk=pk).order_by(sorting_types[get_sorting_type])
+
+    if get_sorting_type:
+        return Product.objects.all().order_by(sorting_types[get_sorting_type])
+    else:
+        return Product.objects.all()
