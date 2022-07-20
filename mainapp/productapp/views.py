@@ -10,9 +10,11 @@ def gender(request, pk=None):
 
 def products(request, pk=None):
     title = 'Каталог'
+    current_sort = request.GET.get('sorting')
     gender_choise_list = Genders.objects.all()
     categories = ProductCategory.objects.all()
     category_from_request = 0
+
 
     if 'category' in request.META.get('HTTP_REFERER'):
         category_from_request = request.META.get('HTTP_REFERER')[-2]
@@ -53,6 +55,7 @@ def products(request, pk=None):
         'products': page_obj,
         'gender_choise_list': gender_choise_list,
         'categories': categories,
+        'current_sort':current_sort,
     }
 
     return render(request, 'productapp/products.html', context)
@@ -106,7 +109,7 @@ def sorting(request, pk=None):
         'price': 'price',
         'price_desc': '-price'
     }
-    get_sorting_type = request.GET.get('page')
+    get_sorting_type = request.GET.get('sorting')
 
     if get_sorting_type and pk:
         return Product.objects.filter(category__pk=pk).order_by(sorting_types[get_sorting_type])

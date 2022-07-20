@@ -63,10 +63,10 @@
                     <div class="d-flex">
                         <select onchange="window.location.href = this.options[this.selectedIndex].value">
                             <option value="">Сортировка:</option>
-                            <option value="?page=name">A -> Z</option>
-                            <option value="?page=name_desc">Z -> A</option>
-                            <option value="?page=price">Price: Low to High</option>
-                            <option value="?page=price_desc">Price: High to Low</option>
+                            <option value="?sorting=name">A -> Z</option>
+                            <option value="?sorting=name_desc">Z -> A</option>
+                            <option value="?sorting=price">Price: Low to High</option>
+                            <option value="?sorting=price_desc">Price: High to Low</option>
 
                         </select>
                     </div>
@@ -123,7 +123,7 @@
                     {% for i in products.paginator.page_range%}
                     <li class="page-item">
                         <a class="page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 text-dark"
-                           href="?page={{ i }}">{{i}}</a>
+                           href="?page={{ i }}&sorting={{current_sort}}">{{i}}</a>
                     </li>
                     {% endfor %}
 
