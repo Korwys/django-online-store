@@ -15,7 +15,6 @@ def products(request, pk=None):
     categories = ProductCategory.objects.all()
     category_from_request = 0
 
-
     if 'category' in request.META.get('HTTP_REFERER'):
         category_from_request = request.META.get('HTTP_REFERER')[-2]
         gender = get_object_or_404(Genders, pk=pk)
@@ -27,7 +26,7 @@ def products(request, pk=None):
                 gender = {'name': 'All'}
             else:
                 gender = get_object_or_404(Genders, pk=pk)
-                products = Product.objects.filter(gender__pk=pk)
+                products = sorting(request, pk)
                 categories = []
                 for item in products:
                     if item.category not in categories:
@@ -42,6 +41,7 @@ def products(request, pk=None):
                 'products': page_obj,
                 'gender_choise_list': gender_choise_list,
                 'categories': categories,
+                'current_sort': current_sort,
             }
             return render(request, 'productapp/products.html', context)
 
@@ -55,7 +55,7 @@ def products(request, pk=None):
         'products': page_obj,
         'gender_choise_list': gender_choise_list,
         'categories': categories,
-        'current_sort':current_sort,
+        'current_sort': current_sort,
     }
 
     return render(request, 'productapp/products.html', context)
@@ -64,6 +64,7 @@ def products(request, pk=None):
 def category(request, pk):
     gender_choise_list = Genders.objects.all()
     categories = ProductCategory.objects.all()
+    current_sort = request.GET.get('sorting')
 
     if 'gender' in request.META.get('HTTP_REFERER'):
         gender_id = request.META.get('HTTP_REFERER')[-2]
@@ -77,7 +78,7 @@ def category(request, pk):
 
     else:
         if request.GET.get('page'):
-            products = sorting(request,pk)
+            products = sorting(request, pk)
         else:
             products = Product.objects.filter(category__pk=pk)
 
@@ -85,6 +86,7 @@ def category(request, pk):
             'products': products,
             'gender_choise_list': gender_choise_list,
             'categories': categories,
+            'current_sort': current_sort,
         }
         return render(request, 'productapp/products.html', context)
 
@@ -110,6 +112,11 @@ def sorting(request, pk=None):
         'price_desc': '-price'
     }
     get_sorting_type = request.GET.get('sorting')
+
+    if 'gender' in request.path and get_sorting_type:
+        return Product.objects.filter(gender__pk=pk).order_by(sorting_types[get_sorting_type])
+    elif 'gender' in request.path:
+        return Product.objects.filter(gender__pk=pk)
 
     if get_sorting_type and pk:
         return Product.objects.filter(category__pk=pk).order_by(sorting_types[get_sorting_type])

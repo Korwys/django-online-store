@@ -26,11 +26,11 @@
     <div class="row">
 
         <div class="col-lg-3">
-            <h1 class="h2 pb-4">Sorting</h1>
+            <h1 class="h2 pb-4">Категории</h1>
             <ul class="list-unstyled templatemo-accordion">
                 <li class="pb-3">
                     <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">
-                        Gender
+                        Пол
                         <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
                     </a>
                     <ul class="collapse show list-unstyled pl-3">
@@ -44,7 +44,7 @@
 
                 <li class="pb-3">
                     <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">
-                        Product Category
+                        Все Категории
                         <i class="pull-right fa fa-fw fa-chevron-circle-down mt-1"></i>
                     </a>
                     <ul id="collapseThree" class="collapse list-unstyled pl-3">
@@ -61,12 +61,12 @@
             <div class="row">
                 <div class="col-md-6 pb-4">
                     <div class="d-flex">
-                        <select onchange="window.location.href = this.options[this.selectedIndex].value">
+                        <select class="form-control" onchange="window.location.href = this.options[this.selectedIndex].value">
                             <option value="">Сортировка:</option>
-                            <option value="?sorting=name">A -> Z</option>
-                            <option value="?sorting=name_desc">Z -> A</option>
-                            <option value="?sorting=price">Price: Low to High</option>
-                            <option value="?sorting=price_desc">Price: High to Low</option>
+                            <option value="?sorting=name">А -> Я</option>
+                            <option value="?sorting=name_desc">Я -> А</option>
+                            <option value="?sorting=price">Сначала Дешевые</option>
+                            <option value="?sorting=price_desc">Сначала Дорогие</option>
 
                         </select>
                     </div>
