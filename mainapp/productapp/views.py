@@ -7,8 +7,6 @@ from productapp.models import Product, ProductCategory, Genders
 def products(request, pk=None):
     title = 'Каталог'
     current_sort = request.GET.get('sorting')
-    gender_choise_list = Genders.objects.all()
-    categories = ProductCategory.objects.all()
     category_from_request = 0
 
     if 'category' in request.META.get('HTTP_REFERER'):
@@ -19,8 +17,6 @@ def products(request, pk=None):
         context = {
             'gender': gender,
             'products': products,
-            'gender_choise_list': gender_choise_list,
-            'categories': categories,
             'current_sort': current_sort,
         }
         return render(request, 'productapp/products.html', context)
@@ -44,8 +40,6 @@ def products(request, pk=None):
             context = {
                 'gender': gender,
                 'products': page_obj,
-                'gender_choise_list': gender_choise_list,
-                'categories': categories,
                 'current_sort': current_sort,
             }
             return render(request, 'productapp/products.html', context)
@@ -58,8 +52,6 @@ def products(request, pk=None):
     context = {
         'title': title,
         'products': page_obj,
-        'gender_choise_list': gender_choise_list,
-        'categories': categories,
         'current_sort': current_sort,
     }
 
@@ -67,8 +59,6 @@ def products(request, pk=None):
 
 
 def category(request, pk):
-    gender_choise_list = Genders.objects.all()
-    categories = ProductCategory.objects.all()
     current_sort = request.GET.get('sorting')
 
     if 'gender' in request.META.get('HTTP_REFERER'):
@@ -76,8 +66,6 @@ def category(request, pk):
         products = Product.objects.filter(category__pk=pk, gender__pk=gender_id)
         context = {
             'products': products,
-            'gender_choise_list': gender_choise_list,
-            'categories': categories,
         }
         return render(request, 'productapp/products.html', context)
 
@@ -89,8 +77,6 @@ def category(request, pk):
 
         context = {
             'products': products,
-            'gender_choise_list': gender_choise_list,
-            'categories': categories,
             'current_sort': current_sort,
         }
         return render(request, 'productapp/products.html', context)
