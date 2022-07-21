@@ -122,8 +122,13 @@
                 <ul class="pagination pagination-lg justify-content-end">
                     {% for i in products.paginator.page_range%}
                     <li class="page-item">
+                        {% if current_sort %}
                         <a class="page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 text-dark"
                            href="?page={{ i }}&sorting={{current_sort}}">{{i}}</a>
+                        {%else%}
+                        <a class="page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 text-dark"
+                           href="?page={{ i }}">{{i}}</a>
+                        {%endif%}
                     </li>
                     {% endfor %}
 

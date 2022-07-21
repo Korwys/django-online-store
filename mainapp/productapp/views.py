@@ -4,10 +4,6 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from productapp.models import Product, ProductCategory, Genders
 
 
-def gender(request, pk=None):
-    pass
-
-
 def products(request, pk=None):
     title = 'Каталог'
     current_sort = request.GET.get('sorting')
@@ -19,6 +15,15 @@ def products(request, pk=None):
         category_from_request = request.META.get('HTTP_REFERER')[-2]
         gender = get_object_or_404(Genders, pk=pk)
         products = Product.objects.filter(gender__pk=pk, category__pk=category_from_request)
+
+        context = {
+            'gender': gender,
+            'products': products,
+            'gender_choise_list': gender_choise_list,
+            'categories': categories,
+            'current_sort': current_sort,
+        }
+        return render(request, 'productapp/products.html', context)
     else:
         if pk is not None:
             if pk == 0:
@@ -77,7 +82,7 @@ def category(request, pk):
         return render(request, 'productapp/products.html', context)
 
     else:
-        if request.GET.get('page'):
+        if request.GET.get('sorting'):
             products = sorting(request, pk)
         else:
             products = Product.objects.filter(category__pk=pk)
@@ -121,7 +126,7 @@ def sorting(request, pk=None):
     if get_sorting_type and pk:
         return Product.objects.filter(category__pk=pk).order_by(sorting_types[get_sorting_type])
 
-    if get_sorting_type:
+    if get_sorting_type is not None:
         return Product.objects.all().order_by(sorting_types[get_sorting_type])
     else:
         return Product.objects.all()
