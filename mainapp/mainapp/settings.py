@@ -66,6 +66,7 @@ TEMPLATES = [
 
                 'productapp.context_processors.genders_list',
                 'productapp.context_processors.product_categories',
+                'productapp.context_processors.products',
             ],
         },
     },
