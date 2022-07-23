@@ -42,7 +42,7 @@ def filter_by_category(request, pk):
     if 'gender' in request.META.get('HTTP_REFERER'):
         gender_id = request.META.get('HTTP_REFERER')[-2]
         products = Product.objects.filter(category__pk=pk, gender__pk=gender_id)
-        context = {'products': products}
+        context = {'products': pages_paginator(request)}
         return render(request, 'productapp/products.html', context)
     else:
         products_by_category = Product.objects.filter(category__pk=pk)
@@ -56,11 +56,11 @@ def filter_by_category(request, pk):
 def single_product_page(request, pk):
     title = 'Страница продукта'
     product = get_object_or_404(Product, pk=pk)
-    products = Product.objects.all()
+    related_products = Product.objects.filter(gender__pk=product.gender.pk).exclude(name=product.name)
     context = {
         'title': title,
         'product': product,
-        'products': products,
+        'products': related_products,
     }
     return render(request, 'productapp/single_product.html', context)
 
