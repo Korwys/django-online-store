@@ -39,7 +39,10 @@ INSTALLED_APPS = [
     'mainapp',
     'productapp',
     'authapp',
+
 ]
+
+AUTH_USER_MODEL = 'authapp.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -81,7 +84,7 @@ WSGI_APPLICATION = 'mainapp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'shop_db',
+        'NAME': 'django',
         'USER': 'postgres',
         'PASSWORD': 'root',
         'HOST': '127.0.0.1',
