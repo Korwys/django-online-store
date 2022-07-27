@@ -1,3 +1,6 @@
+import os
+from hashlib import pbkdf2_hmac
+
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django import forms
 
@@ -15,9 +18,16 @@ class UserRegisterForm(UserCreationForm):
             field.widget.attrs['class'] = 'form-styling'
             field.help_text = ''
 
+    def save(self):
+        user = super(UserRegisterForm, self).save()
+        user.is_active = False
+        salt = os.urandom(16)
+        user.activation_key = pbkdf2_hmac('sha1', b'user.email', salt, 1000).hex()
+        user.save()
+        return user
+
 
 class UserLoginForm(AuthenticationForm):
     class Meta:
         model = User
         fields = ('username', 'password')
-
