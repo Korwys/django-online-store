@@ -18,14 +18,9 @@
       </ul>
     </div>
     <div ng-app ng-init="checked = false">
-        <form class="form-signin" action="{% url 'auth:user_register' %}" method="post">
+        <form class="form-signin" action="{% url 'auth:new_user_registration' %}" method="post">
           {% csrf_token %}
             {{ register_form.as_p }}
-<!--            {% for field in register_form %}-->
-<!--          <label for="{{ field.name }}">{{field.html_name}}</label>-->
-<!--          <input id ="{{ field.name }}" class="form-styling" type="text"-->
-<!--                 maxlength="20" name="{{field.field.name}}"  required/>-->
-<!--          {% endfor %}-->
 
           <input class="btn-animate" type="submit" value="Регистрация">
         </form>

@@ -15,6 +15,7 @@ gender = "^0.0.33"
 products = "^1.0.0"
 social-auth-app-django = "^5.0.0"
 now = "^0.0.6"
+django-environ = "^0.9.0"
 
 [tool.poetry.dev-dependencies]
 
