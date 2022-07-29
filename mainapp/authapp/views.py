@@ -3,11 +3,12 @@ from django.contrib import auth
 from django.urls import reverse
 
 from .forms import UserLoginForm, UserRegisterForm
-from .models import User
 from .services.crud import save_new_user_data, activate_new_user
 
 
 def user_login(request):
+    """ Логинит пользователя на сайте"""
+
     login_form = UserLoginForm(data=request.POST)
     if request.method == 'POST' and login_form.is_valid():
         username = request.POST['username']
@@ -20,7 +21,9 @@ def user_login(request):
     return render(request, 'authapp/login.html', context)
 
 
-def new_user_registration(request):
+def registers_new_user(request):
+    """ Регистрирует нового пользователя """
+
     if request.method == 'POST':
         return save_new_user_data(request)
     else:

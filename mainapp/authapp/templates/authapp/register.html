@@ -18,7 +18,7 @@
       </ul>
     </div>
     <div ng-app ng-init="checked = false">
-        <form class="form-signin" action="{% url 'auth:new_user_registration' %}" method="post">
+        <form class="form-signin" action="{% url 'auth:registers_new_user' %}" method="post">
           {% csrf_token %}
             {{ register_form.as_p }}
 
