@@ -1,9 +1,8 @@
 from django.shortcuts import render, get_object_or_404
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from .models import Product, ProductCategory, Genders
-from .services.filtering import filtering_products_by_gender, filtering_product_by_category, filtering_related_products
-from .services.sorting import paginate
+from .models import Product
+from .services.crud import filtering_products_by_gender, filtering_product_by_category, filtering_related_products,\
+    paginate
 
 
 def get_all_products(request):
