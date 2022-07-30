@@ -7,7 +7,7 @@ from authapp.models import User
 from authapp.services.email import send_verification_email
 
 
-def save_new_user_data(request):
+def save_new_user_data(request) -> HttpResponseRedirect:
     """" Сохраняет данные нового юзера и отправляет ему письмо для подтверждения регистрации.
     Возвращает редирект на страницу товаров """
 
@@ -20,7 +20,7 @@ def save_new_user_data(request):
         return HttpResponseRedirect(reverse('productapp:products'))
 
 
-def activate_new_user(request, email, activation_key):
+def activate_new_user(request, email: str, activation_key: str) -> str:
     """Активирует и логинит юзера при переходе по ссылке из отправленного нами письма при регистрации,
         при условии, что ключ активации совпадает с имеющимся и его срок не истек и
         возвращает сообщение о результате активации"""
@@ -35,7 +35,7 @@ def activate_new_user(request, email, activation_key):
             return ' Поздравляем! Вы успешно зарегистрировались!'
         elif user.activation_key == activation_key and user.is_active is True:
             return 'Ранее Вы уже подтвердили регистрацию!'
-        elif user.activation_key == activation_key and user.check_is_activation_key_expired() and\
+        elif user.activation_key == activation_key and user.check_is_activation_key_expired() and \
                 user.is_active is not True:
             send_verification_email(user)
             return 'Ваш ключ активации истек. Мы отправили Вам новый. Провербте свой почтовый ящик'

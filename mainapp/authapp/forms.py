@@ -1,7 +1,7 @@
 import os
 from hashlib import pbkdf2_hmac
 
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
 from django import forms
 
 from .models import User
@@ -31,3 +31,15 @@ class UserLoginForm(AuthenticationForm):
     class Meta:
         model = User
         fields = ('username', 'password')
+
+
+class UserEditForm(UserChangeForm):
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'password')
+
+    def __init__(self, *args, **kwargs):
+        super(UserChangeForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-styling'
+            field.help_text = ''

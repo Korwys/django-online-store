@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponseRedirect
 from django.contrib import auth
 from django.urls import reverse
 
-from .forms import UserLoginForm, UserRegisterForm
+from .forms import UserLoginForm, UserRegisterForm, UserEditForm
 from .services.crud import save_new_user_data, activate_new_user
 
 
@@ -19,6 +19,29 @@ def user_login(request):
             return HttpResponseRedirect(reverse('index'))
     context = {'login_form': login_form}
     return render(request, 'authapp/login.html', context)
+
+
+def user_logout(request):
+    """Разлогинивает пользователя"""
+
+    auth.logout(request)
+    return HttpResponseRedirect(reverse('index'))
+
+
+def edit_user_profile(request):
+    """Редактирует профиль пользователя"""
+
+    if request.method == 'POST':
+        edit_form = UserEditForm(request.POST, request.FILES, instance=request.user)
+        if edit_form.is_valid():
+            edit_form.save()
+            return HttpResponseRedirect(reverse('auth:edit_user_profile'))
+    else:
+        context = {
+            'title': 'Редактирование профиля',
+            'edit_form': UserEditForm(instance=request.user),
+        }
+        return render(request, 'authapp/edit.html', context)
 
 
 def registers_new_user(request):
