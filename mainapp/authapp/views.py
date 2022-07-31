@@ -1,6 +1,7 @@
 from django.shortcuts import render, HttpResponseRedirect
 from django.contrib import auth
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
 from .forms import UserLoginForm, UserRegisterForm, UserEditForm
 from .services.crud import save_new_user_data, activate_new_user
@@ -27,7 +28,7 @@ def user_logout(request):
     auth.logout(request)
     return HttpResponseRedirect(reverse('index'))
 
-
+@login_required
 def edit_user_profile(request):
     """Редактирует профиль пользователя"""
 
