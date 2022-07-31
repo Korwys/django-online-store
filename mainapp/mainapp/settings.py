@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'mainapp',
     'productapp',
     'authapp',
+    'cartapp',
 
 ]
 
@@ -71,6 +72,7 @@ TEMPLATES = [
                 'productapp.context_processors.genders_list',
                 'productapp.context_processors.product_categories',
                 'productapp.context_processors.products',
+                'productapp.context_processors.cart_total_quantity',
             ],
         },
     },
@@ -109,6 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGIN_URL = '/auth/login/'
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
