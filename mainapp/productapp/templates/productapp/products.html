@@ -85,7 +85,8 @@
                                     <li><a class="btn btn-success text-white mt-2"
                                            href="{% url 'productapp:single_product' product.pk%}"><i
                                             class="far fa-eye"></i></a></li>
-                                    <li><a class="btn btn-success text-white mt-2" href="shop-single.html"><i
+                                    <li><a class="btn btn-success text-white mt-2"
+                                           href="{% url 'cart:add_product_in_cart' product.pk %}"><i
                                             class="fas fa-cart-plus"></i></a></li>
                                 </ul>
                             </div>
