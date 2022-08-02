@@ -23,7 +23,7 @@ def add_selected_product_in_cart(request, pk: int) -> None:
     cart_item.save()
 
 
-def remove_selected_product_from_cart(pk: int) -> None:
+def remove_selected_product_from_cart(pk: int):
     """Удаляет выбранный товар из корзины"""
 
     selected_product = get_object_or_404(Cart, pk=pk)
