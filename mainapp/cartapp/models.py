@@ -52,4 +52,4 @@ class Cart(models.Model):
     def total_cost(self):
         """Метод возвращает итоговую стоимость за все товары в корзине"""
         cart_user_list = Cart.objects.filter(user=self.user)
-        return sum(list(map(lambda x: self.product_cost, cart_user_list)))
+        return sum(list(map(lambda x: x.product_cost, cart_user_list)))

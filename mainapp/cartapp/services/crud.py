@@ -41,4 +41,4 @@ def change_product_quantity(request, pk: int, quantity: int) -> Cart:
     else:
         cart_item.delete()
 
-    return Cart.objects.filter(user=request.user)
+    return Cart.objects.filter(user=request.user).order_by('product__price')
