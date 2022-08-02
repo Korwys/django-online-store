@@ -19,9 +19,9 @@ def cart_total_quantity(request):
     """Если пользователь аутентифицирован, то вернет текущий список объектов в корзине пользователя, иначе пустая строка"""
 
     if request.user.is_authenticated:
-        return {'user_products': Cart.objects.filter(user=request.user)}
+        return {'total_products_quantity': Cart.objects.filter(user=request.user)}
     else:
-        return {'user_products': ' '}
+        return {'total_products_quantity': ' '}
 
 
 def get_user_products_in_wishlist(request):

@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'productapp',
     'authapp',
     'cartapp',
+    'wishapp',
 
 ]
 
@@ -73,10 +74,11 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
 
-                'productapp.context_processors.genders_list',
-                'productapp.context_processors.product_categories',
-                'productapp.context_processors.products',
-                'productapp.context_processors.cart_total_quantity',
+                'core.context_processors.genders_list',
+                'core.context_processors.product_categories',
+                'core.context_processors.products',
+                'core.context_processors.cart_total_quantity',
+                'core.context_processors.get_user_products_in_wishlist',
             ],
         },
     },

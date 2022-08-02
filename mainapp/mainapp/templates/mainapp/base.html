@@ -100,24 +100,37 @@
                    data-bs-target="#templatemo_search">
                     <i class="fa fa-fw fa-search text-dark mr-2"></i>
                 </a>
+                <a class="nav-icon position-relative text-decoration-none" href="{% url 'wishlist:wishlist' %}">
+                    <i class="fa fa-fw fa-heart text-dark mr-2"></i>
+                    <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-white text-dark">{{wishlist_products.0.get_total_quantity}}
+                        </span>
+                </a>
+
                 <a class="nav-icon position-relative text-decoration-none" href="{% url 'cartapp:get_user_cart' %}">
                     <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
-                    <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">{{user_products.0.total_quantity}}
+                    <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-white text-dark">{{total_products_quantity.0.total_quantity}}
                         </span>
                 </a>
                 <div class="dropdown">
+                    {% if user.is_authenticated %}
+
                     <button class="nav-icon position-relative text-decoration-none" type="button" id="dropdownMenuButton1"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa fa-fw fa-user text-dark mr-3"></i>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        {% if user.is_authenticated %}
-                        <li><a class="dropdown-item" href="{% url 'auth:edit_user_profile' %}">Профиль</a></li>
-                        <li><a class="dropdown-item" href="{% url 'auth:user_logout' %}">Выход</a></li>
+                            data-bs-toggle="dropdown" aria-expanded="false">{{user.first_name}}
+
                         {% else %}
-                        <li><a class="dropdown-item" href="{% url 'auth:user_login' %}">Войти</a></li>
-                        {% endif %}
-                    </ul>
+                        <button class="nav-icon position-relative text-decoration-none" type="button"
+                                onclick="LoginUser()"> Войти
+                            {% endif %}
+                            <i class="fa fa-fw fa-user text-dark mr-3"></i>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            {% if user.is_authenticated %}
+                            <li><a class="dropdown-item" href="{% url 'auth:edit_user_profile' %}">Профиль</a></li>
+                            <li><a class="dropdown-item" href="{% url 'auth:user_logout' %}">Выход</a></li>
+                            {% else %}
+                            <li><a class="dropdown-item" href="{% url 'auth:user_login' %}">Войти</a></li>
+                            {% endif %}
+                        </ul>
                 </div>
 
             </div>
@@ -294,9 +307,15 @@
 
 
 
+
 </script>
 <!-- End Slider Script -->
+<script>
+        function LoginUser() {
+            window.location.href = "/auth/login";
+        }
 
+</script>
 
 </body>
 </html>
