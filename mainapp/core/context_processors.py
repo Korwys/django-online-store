@@ -1,5 +1,6 @@
 from cartapp.models import Cart
-from .models import Genders, ProductCategory, Product
+from wishapp.models import WishList
+from productapp.models import Genders, ProductCategory, Product
 
 
 def genders_list(request):
@@ -21,3 +22,12 @@ def cart_total_quantity(request):
         return {'user_products': Cart.objects.filter(user=request.user)}
     else:
         return {'user_products': ' '}
+
+
+def get_user_products_in_wishlist(request):
+    """Если пользователб аутентифицирован то вернет список всех товаров в избранном у данного пользователя"""
+
+    if request.user.is_authenticated:
+        return {'wishlist_products': WishList.objects.filter(user=request.user)}
+    else:
+        return {'wishlist_products': ' '}
