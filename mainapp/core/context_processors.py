@@ -1,4 +1,5 @@
 from cartapp.models import Cart
+from orderapp.models import Order
 from wishapp.models import WishList
 from productapp.models import Genders, ProductCategory, Product
 
@@ -31,3 +32,11 @@ def get_user_products_in_wishlist(request):
         return {'wishlist_products': WishList.objects.filter(user=request.user)}
     else:
         return {'wishlist_products': ' '}
+
+def get_user_orders(request):
+    """Если пользователб аутентифицирован то вернет список всех товаров в избранном у данного пользователя"""
+
+    if request.user.is_authenticated:
+        return {'user_orders': Order.objects.filter(user=request.user)}
+    else:
+        return {'user_orders': ' '}

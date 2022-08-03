@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'authapp',
     'cartapp',
     'wishapp',
+    'orderapp',
 
 ]
 
@@ -79,6 +80,7 @@ TEMPLATES = [
                 'core.context_processors.products',
                 'core.context_processors.cart_total_quantity',
                 'core.context_processors.get_user_products_in_wishlist',
+                'core.context_processors.get_user_orders',
             ],
         },
     },

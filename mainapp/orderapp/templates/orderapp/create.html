@@ -1,0 +1,16 @@
+{% extends 'mainapp/base.html'%}
+
+
+{% block content %}
+<h3>Создание заказа</h3>
+
+<form action="." method="post" class="order-form">
+    {% csrf_token %}
+    <div class="h2 text-left head">{{ form.as_p }}</div>
+    <p><input type="submit" value="Оформить заказ"></p>
+</form>
+<br>
+<button class="btn btn-round form-control">
+<a href="{% url 'index' %}" class="">На главную</a>
+</button>
+{% endblock %}

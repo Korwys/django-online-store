@@ -22,7 +22,7 @@
     <!-- Slick -->
     <link rel="stylesheet" type="text/css" href="{% static 'mainapp/css/slick.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'mainapp/css/slick-theme.css' %}">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
     {% block map_style %}
     {% endblock %}
@@ -99,6 +99,11 @@
                 <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal"
                    data-bs-target="#templatemo_search">
                     <i class="fa fa-fw fa-search text-dark mr-2"></i>
+                </a>
+                <a class="nav-icon position-relative text-decoration-none" href="{% url 'order:orders' %}">
+                    <i class="fa fa-fw fa-box text-dark mr-2"></i>
+                    <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-white text-dark">{{user_orders.0.get_orders_quantity}}
+                        </span>
                 </a>
                 <a class="nav-icon position-relative text-decoration-none" href="{% url 'wishlist:wishlist' %}">
                     <i class="fa fa-fw fa-heart text-dark mr-2"></i>
