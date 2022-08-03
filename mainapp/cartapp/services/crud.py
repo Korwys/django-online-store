@@ -7,7 +7,7 @@ from productapp.models import Product
 def get_cart_products_by_user(request) -> Cart:
     """ Возвращает список товаров в корзине пользователя"""
 
-    return Cart.objects.filter(user=request.user).order_by('product__price')
+    return Cart.objects.filter(user=request.user)
 
 
 def add_selected_product_in_cart(request, pk: int) -> None:
