@@ -3,10 +3,12 @@ from django.contrib import auth
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
+from core.view_logger import view_logger
 from .forms import UserLoginForm, UserRegisterForm, UserEditForm
 from .services.crud import save_new_user_data, activate_new_user
 
 
+@view_logger
 def user_login(request):
     """ Логинит пользователя на сайте"""
 
@@ -22,12 +24,15 @@ def user_login(request):
     return render(request, 'authapp/login.html', context)
 
 
+@view_logger
 def user_logout(request):
     """Разлогинивает пользователя"""
 
     auth.logout(request)
     return HttpResponseRedirect(reverse('index'))
 
+
+@view_logger
 @login_required
 def edit_user_profile(request):
     """Редактирует профиль пользователя"""
@@ -45,6 +50,7 @@ def edit_user_profile(request):
         return render(request, 'authapp/edit.html', context)
 
 
+@view_logger
 def registers_new_user(request):
     """ Регистрирует нового пользователя """
 
@@ -57,6 +63,7 @@ def registers_new_user(request):
     return render(request, 'authapp/register.html', context)
 
 
+@view_logger
 def confirm_new_user_registration(request, email, activation_key):
     """ Отображает юзеру результат верификации на сайте после перехода по ссылке из отправленого нами письма"""
 

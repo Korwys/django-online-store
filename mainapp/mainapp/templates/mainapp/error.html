@@ -1,0 +1,16 @@
+{% extends 'mainapp/base.html'%}
+{% load static %}
+
+{% block content %}
+<div class="m-0 mx-auto max-w-screen-xl px-4 lg:px-5">
+    <section class="mt-16 mb-16 text-center md:mt-20 md:mb-20">
+        <div class="mb-6"><span class="inline-block h-24 w-[67px] bg-gray-100 dark:bg-zinc-800"
+                                style="mask:url(/images/drop.svg) 50% 50% no-repeat;-webkit-mask:url(/images/drop.svg) 50% 50% no-repeat"></span>
+        </div>
+        <h1 class="mb-4 text-xl font-bold sm:text-2xl md:text-3xl">Упс, есть проблемка...</h1>
+        <p class="mx-auto mb-6 text-base font-medium text-gray-400 dark:text-zinc-500">Но я уже в курсе, скоро все будет работать!)</p>
+        <div class="flex flex-col justify-center sm:flex-row"><a
+                class="btn btn-primary btn-medium tap-highlight flex items-center justify-center" href="{% url 'index'%}">На главную</a></div>
+    </section>
+</div>
+{% endblock %}

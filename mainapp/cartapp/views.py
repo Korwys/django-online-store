@@ -3,11 +3,13 @@ from django.template.loader import render_to_string
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
+from core.view_logger import view_logger
 from .models import Cart
 from .services.crud import get_cart_products_by_user, add_selected_product_in_cart, remove_selected_product_from_cart, \
     change_product_quantity
 
 
+@view_logger
 @login_required
 def get_user_cart(request):
     """Отображает товары в корзине пользователя"""
@@ -18,6 +20,7 @@ def get_user_cart(request):
     return render(request, 'cartapp/cart.html', context)
 
 
+@view_logger
 @login_required
 def add_product_in_cart(request, pk: int):
     """Добавляет товар в корзину"""
@@ -26,6 +29,7 @@ def add_product_in_cart(request, pk: int):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
+@view_logger
 @login_required
 def remove_product_from_cart(request, pk: int):
     """Удаляет товар из корзины"""
@@ -37,9 +41,11 @@ def remove_product_from_cart(request, pk: int):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
+@view_logger
 @login_required
 def edit_user_cart(request, pk: int, quantity: int):
     """Изменяет количество товара в корзине и возвращает ответ в json"""
+
     if request.accepts('XMLHttpRequest'):
         cart_product_list_after_edit = change_product_quantity(request, pk, quantity)
         context = {

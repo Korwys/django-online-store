@@ -173,17 +173,6 @@ optional = false
 python-versions = "*"
 
 [[package]]
-name = "gender"
-version = "0.0.33"
-description = "Get gender from name and email address"
-category = "main"
-optional = false
-python-versions = ">=3.8"
-
-[package.dependencies]
-unidecode = "*"
-
-[[package]]
 name = "idna"
 version = "3.3"
 description = "Internationalized Domain Names in Applications (IDNA)"
@@ -261,14 +250,6 @@ python-versions = ">=3.5"
 traitlets = "*"
 
 [[package]]
-name = "now"
-version = "0.0.6"
-description = "Record what you are doing SIMPLY from the command line"
-category = "main"
-optional = false
-python-versions = "*"
-
-[[package]]
 name = "oauthlib"
 version = "3.2.0"
 description = "A generic, spec-compliant, thorough implementation of the OAuth request-signing logic"
@@ -303,21 +284,6 @@ python-versions = ">=3.6"
 [package.extras]
 qa = ["flake8 (==3.8.3)", "mypy (==0.782)"]
 testing = ["docopt", "pytest (<6.0.0)"]
-
-[[package]]
-name = "parts"
-version = "1.4.0"
-description = "Minimal library that enables partitioning of iterable objects in a concise manner."
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.extras]
-coveralls = ["coveralls (>=3.3.1,<3.4.0)"]
-docs = ["sphinx (>=4.2.0,<4.3.0)", "sphinx-rtd-theme (>=1.0.0,<1.1.0)", "sphinx-autodoc-typehints (>=1.12.0,<1.13.0)"]
-lint = ["pylint (>=2.14.0,<2.15.0)"]
-publish = ["setuptools (>=62.0,<63.0)", "wheel (>=0.37,<1.0)", "twine (>=4.0,<5.0)"]
-test = ["pytest (>=7.0,<8.0)", "pytest-cov (>=3.0,<4.0)"]
 
 [[package]]
 name = "pexpect"
@@ -373,24 +339,6 @@ python-versions = "*"
 [package.dependencies]
 psycopg2-binary = ">=2.8"
 psycopg2-pool = "*"
-
-[[package]]
-name = "products"
-version = "1.0.0"
-description = "Simple function for building ensembles of iterables that are disjoint partitions of an overall Cartesian product."
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-parts = ">=1.4,<2.0"
-
-[package.extras]
-coveralls = ["coveralls (>=3.3.1,<3.4.0)"]
-docs = ["sphinx (>=4.2.0,<4.3.0)", "sphinx-rtd-theme (>=1.0.0,<1.1.0)"]
-lint = ["pylint (>=2.14.0,<2.15.0)"]
-publish = ["setuptools (>=62.0,<63.0)", "wheel (>=0.37,<1.0)", "twine (>=4.0,<5.0)"]
-test = ["pytest (>=7.0,<8.0)", "pytest-cov (>=3.0,<4.0)"]
 
 [[package]]
 name = "prompt-toolkit"
@@ -518,6 +466,14 @@ tomli = ">=1.0.0"
 
 [package.extras]
 testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "pygments (>=2.7.2)", "requests", "xmlschema"]
+
+[[package]]
+name = "python-json-logger"
+version = "2.0.4"
+description = "A python library adding a json log formatter"
+category = "main"
+optional = false
+python-versions = ">=3.5"
 
 [[package]]
 name = "python3-openid"
@@ -662,14 +618,6 @@ optional = false
 python-versions = ">=2"
 
 [[package]]
-name = "unidecode"
-version = "1.3.4"
-description = "ASCII transliterations of Unicode text"
-category = "main"
-optional = false
-python-versions = ">=3.5"
-
-[[package]]
 name = "urllib3"
 version = "1.26.10"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
@@ -693,7 +641,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "952403b29d99271bc9a05fe68b30549741e5e9e5c4767f7cf5e033b8b6cefc40"
+content-hash = "8ff683b255deb8689fe443471aa0bb2dd1da7968d1ff26a558013a868a1fc3e7"
 
 [metadata.files]
 appnope = [
@@ -733,7 +681,6 @@ executing = [
     {file = "executing-0.8.3-py2.py3-none-any.whl", hash = "sha256:d1eef132db1b83649a3905ca6dd8897f71ac6f8cac79a7e58a1a09cf137546c9"},
     {file = "executing-0.8.3.tar.gz", hash = "sha256:c6554e21c6b060590a6d3be4b82fb78f8f0194d809de5ea7df1c093763311501"},
 ]
-gender = []
 idna = [
     {file = "idna-3.3-py3-none-any.whl", hash = "sha256:84d9dd047ffa80596e0f246e2eab0b391788b0503584e8945f2368256d2735ff"},
     {file = "idna-3.3.tar.gz", hash = "sha256:9d643ff0a55b762d5cdb124b8eaa99c66322e2157b69160bc32796e824360e6d"},
@@ -751,14 +698,12 @@ matplotlib-inline = [
     {file = "matplotlib-inline-0.1.3.tar.gz", hash = "sha256:a04bfba22e0d1395479f866853ec1ee28eea1485c1d69a6faf00dc3e24ff34ee"},
     {file = "matplotlib_inline-0.1.3-py3-none-any.whl", hash = "sha256:aed605ba3b72462d64d475a21a9296f400a19c4f74a31b59103d2a99ffd5aa5c"},
 ]
-now = []
 oauthlib = []
 packaging = []
 parso = [
     {file = "parso-0.8.3-py2.py3-none-any.whl", hash = "sha256:c001d4636cd3aecdaf33cbb40aebb59b094be2a74c556778ef5576c175e19e75"},
     {file = "parso-0.8.3.tar.gz", hash = "sha256:8c07be290bb59f03588915921e29e8a50002acaf2cdc5fa0e0114f91709fafa0"},
 ]
-parts = []
 pexpect = [
     {file = "pexpect-4.8.0-py2.py3-none-any.whl", hash = "sha256:0b48a55dcb3c05f3329815901ea4fc1537514d6ba867a152b581d69ae3710937"},
     {file = "pexpect-4.8.0.tar.gz", hash = "sha256:fc65a43959d153d0114afe13997d439c22823a27cefceb5ff35c2178c6784c0c"},
@@ -770,7 +715,6 @@ pickleshare = [
 pillow = []
 pluggy = []
 postgres = []
-products = []
 prompt-toolkit = []
 psycopg2 = []
 psycopg2-binary = []
@@ -792,6 +736,7 @@ pygments = [
 pyjwt = []
 pyparsing = []
 pytest = []
+python-json-logger = []
 python3-openid = []
 requests = []
 requests-oauthlib = []
@@ -812,7 +757,6 @@ traitlets = [
     {file = "traitlets-5.3.0.tar.gz", hash = "sha256:0bb9f1f9f017aa8ec187d8b1b2a7a6626a2a1d877116baba52a129bfa124f8e2"},
 ]
 tzdata = []
-unidecode = []
 urllib3 = []
 wcwidth = [
     {file = "wcwidth-0.2.5-py2.py3-none-any.whl", hash = "sha256:beb4802a9cebb9144e99086eff703a642a13d6a0052920003a230f3294bbe784"},

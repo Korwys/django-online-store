@@ -1,8 +1,11 @@
 import environ
 import os
 from pathlib import Path
+from core.json_loggin_config import CustomJsonFormatter
 
 # Connect environ
+
+
 env = environ.Env()
 environ.Env.read_env()
 
@@ -10,7 +13,7 @@ environ.Env.read_env()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ivf=swo@-b6za#4#^$+p)1lexi&4w-)h6+2^$lz*62g6nx7ekt'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -59,7 +62,54 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+
+    'formatters': {
+        "console": {
+            "format": "{asctime}-{levelname}-{module}-{filename}-{message}",
+            "style": '{',
+        },
+        'json_formater': {
+            '()': CustomJsonFormatter
+        }
+    },
+
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'console'
+        },
+        'file': {
+            'class': 'logging.FileHandler',
+            'formatter': 'json_formater',
+            'filename': './logs/django.log'
+        },
+        'view_file': {
+            'class': 'logging.FileHandler',
+            'formatter': 'json_formater',
+            'filename': './logs/view.log'
+        },
+
+    },
+
+    'loggers': {
+        'django_logger': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'view_logger': {
+            'handlers': ['view_file'],
+            'level': 'WARNING',
+            'propagate': True,
+        },
+    },
+}
 
 ROOT_URLCONF = 'mainapp.urls'
 
@@ -92,11 +142,11 @@ WSGI_APPLICATION = 'mainapp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'django',
+        'NAME': env('NAME'),
         'USER': env('USER_NAME'),
         'PASSWORD': env('USER_PASSWORD'),
-        'HOST': '127.0.0.1',
-        'PORT': '5432'
+        'HOST': env('HOST'),
+        'PORT': env('PORT'),
     }
 }
 
