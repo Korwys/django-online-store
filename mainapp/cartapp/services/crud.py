@@ -4,7 +4,7 @@ from cartapp.models import Cart
 from productapp.models import Product
 
 
-def get_cart_products_by_user(request) -> Cart:
+def get_cart_products_by_user(request):
     """ Возвращает список товаров в корзине пользователя"""
 
     return Cart.objects.filter(user=request.user)
@@ -42,3 +42,4 @@ def change_product_quantity(request, pk: int, quantity: int) -> Cart:
         cart_item.delete()
 
     return Cart.objects.filter(user=request.user).order_by('product__price')
+
