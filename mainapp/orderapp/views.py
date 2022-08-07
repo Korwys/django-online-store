@@ -1,10 +1,9 @@
 from django.shortcuts import render, reverse, HttpResponseRedirect
 
-from cartapp.services.crud import get_cart_products_by_user
 from core.view_logger import view_logger
 from orderapp.forms import OrderCreateForm
-from orderapp.services.crud import create_new_object_in_order_and_orderitem, get_all_orders_by_user, \
-    change_order_status_and_save
+from orderapp.services.crud import get_all_orders_by_user, \
+    change_order_status_and_save, transfer_products_from_cart_to_orderitem
 
 
 @view_logger
@@ -15,17 +14,21 @@ def get_all_user_orders_view(request):
     return render(request, 'orderapp/orders.html', {'all_orders': all_orders})
 
 
-@view_logger
+# @view_logger
 def create_user_order_view(request):
-    """Возвращает в случае GET пустую форму для создания заказа, в случае POST вернет редирект на страницу заказов"""
+    """
+    Возвращает в случае GET пустую форму для создания заказа,а в случае POST, проверит валидность формы, если форма
+    валидна, то создаст заказ. Товары из заказа будут добавлены в структуру заказа, корзина будет очищена
+    """
 
-    cart = get_cart_products_by_user(request)
-    if request.method == 'POST':
-        create_new_object_in_order_and_orderitem(request, cart)
+    form = OrderCreateForm(request.POST or None)
+    form.instance.user = request.user
+    if form.is_valid():
+        order = form.save()
+        transfer_products_from_cart_to_orderitem(request, order)
         return HttpResponseRedirect(reverse('orderapp:orders'))
     else:
-        form = OrderCreateForm()
-    return render(request, 'orderapp/create.html', {'form': form})
+        return render(request, 'orderapp/create.html', {'form': form})
 
 
 @view_logger

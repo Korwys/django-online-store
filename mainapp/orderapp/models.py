@@ -30,7 +30,7 @@ class Order(models.Model):
         verbose_name='Город',
     )
 
-    adress = models.CharField(
+    address = models.CharField(
         max_length=150,
         verbose_name='Адрес',
     )
@@ -95,7 +95,7 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    """Модель описывает структура заказа.(товарная позиция - количество)"""
+    """Модель описывает структуру заказа.(товарная позиция - количество)"""
     order = models.ForeignKey(
         Order,
         related_name='orderitems',

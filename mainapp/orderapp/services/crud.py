@@ -1,24 +1,16 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 
-from cartapp.models import Cart
-from orderapp.forms import OrderCreateForm
+from cartapp.services.crud import get_cart_products_by_user
 from orderapp.models import OrderItem, Order
 
 
-def create_new_object_in_order_and_orderitem(request, cart: Cart) -> None:
-    """Создает новую запись в бд Order и OrderItem + удаляет товары из корзины текущего юзера"""
+def transfer_products_from_cart_to_orderitem(request, order) -> None:
+    """"После создания заказа  товары из корзины перемещает в OrderItem и очищает корзину"""
 
-    form = OrderCreateForm(request.POST)
-    form.instance.user = request.user
-    if form.is_valid():
-        order = form.save()
-        for item in cart:
-            OrderItem.objects.create(
-                order=order,
-                product=item.product,
-                quantity=item.quantity
-            )
-        cart.delete()
+    cart = get_cart_products_by_user(request)
+    for item in cart:
+        OrderItem.objects.create(order=order, product=item.product, quantity=item.quantity)
+    cart.delete()
 
 
 def get_all_orders_by_user(request) -> Order:
