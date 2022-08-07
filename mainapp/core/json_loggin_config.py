@@ -20,7 +20,17 @@ class CustomJsonFormatter(jsonlogger.JsonFormatter):
         else:
             log_record['pathname'] = record.pathname
 
-        if log_record.get('FuncName'):
-            log_record['FuncName'] = log_record['FuncName'].upper()
+        if log_record.get('filename'):
+            log_record['filename'] = log_record['filename'].upper()
         else:
-            log_record['FuncName'] = record.funcName
+            log_record['filename'] = record.filename
+
+        if log_record.get('funcName'):
+            log_record['funcName'] = log_record['funcName'].upper()
+        else:
+            log_record['funcName'] = record.funcName
+
+        if log_record.get('lineno'):
+            log_record['lineno'] = log_record['lineno'].upper()
+        else:
+            log_record['lineno'] = record.lineno
