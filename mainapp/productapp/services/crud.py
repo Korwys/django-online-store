@@ -1,28 +1,36 @@
+import logging
+
 from django.core.paginator import Paginator
 
 from productapp.models import Product
 
+logger = logging.getLogger('django_logger')
+
 
 def filtering_products_by_gender(request, pk: int) -> dict:
     """Фильтрует список товаров по выбранному полу"""
-
-    if 'category' in request.META.get('HTTP_REFERER'):
-        category_from_request = request.META.get('HTTP_REFERER')[-2]
-        products = Product.objects.filter(gender__pk=pk, category__pk=category_from_request)
-        context = {
-            'products': paginate(request, products),
-            'current_sort': request.GET.get('sorting'),
-        }
-        return context
-    else:
-        products_by_gender = Product.objects.filter(gender__pk=pk)
-        categories = set(item.category for item in products_by_gender)
-        context = {
-            'products': paginate(request, products_by_gender, pk=pk),
-            'current_sort': request.GET.get('sorting'),
-            'categories': categories,
-        }
-        return context
+    try:
+        if 'category' in request.META.get('HTTP_REFERER'):
+            category_from_request = request.META.get('HTTP_REFERER')[-2]
+            products = Product.objects.filter(gender__pk=pk, category__pk=category_from_request)
+            context = {
+                'products': paginate(request, products),
+                'current_sort': request.GET.get('sorting'),
+            }
+            return context
+        else:
+            products_by_gender = Product.objects.filter(gender__pk=pk)
+            categories = set(item.category for item in products_by_gender)
+            context = {
+                'products': paginate(request, products_by_gender, pk=pk),
+                'current_sort': request.GET.get('sorting'),
+                'categories': categories,
+            }
+            return context
+    except TypeError as e:
+        logger.error(e)
+    except ValueError as e:
+        logger.error(e)
 
 
 def filtering_product_by_category(request, pk: int) -> dict:
