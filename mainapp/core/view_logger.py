@@ -20,6 +20,6 @@ def view_logger(func):
                 return func(request, *args, **kwargs)
         except Exception as e:
             logger.critical(traceback.format_exc())
-            return render(request, 'mainapp/error.html', )
+            return render(request, 'mainapp/error.html',)
 
     return wrapper

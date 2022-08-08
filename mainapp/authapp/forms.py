@@ -8,6 +8,10 @@ from .models import User
 
 
 class UserRegisterForm(UserCreationForm):
+    password1 = forms.CharField(min_length=8)
+    password2 = forms.CharField(min_length=8)
+
+
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2',)

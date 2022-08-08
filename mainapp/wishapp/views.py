@@ -1,7 +1,6 @@
-from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, reverse
+from django.shortcuts import render, HttpResponseRedirect, reverse
 
 from core.view_logger import view_logger
-from wishapp.models import WishList
 from wishapp.services.crud import save_selected_product, remove_selected_product, count_whishlist_products_by_user, \
     get_all_products_in_wishlist_by_user
 

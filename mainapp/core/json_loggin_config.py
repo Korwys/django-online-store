@@ -4,6 +4,8 @@ from pythonjsonlogger import jsonlogger
 
 class CustomJsonFormatter(jsonlogger.JsonFormatter):
     def add_fields(self, log_record, record, message_dict):
+        """Добавляет поля в json файл при логгированни"""
+
         super(CustomJsonFormatter, self).add_fields(log_record, record, message_dict)
 
         if not log_record.get('timestamp'):

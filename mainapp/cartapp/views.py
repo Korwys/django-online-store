@@ -4,7 +4,6 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
 from core.view_logger import view_logger
-from .models import Cart
 from .services.crud import get_cart_products_by_user, add_selected_product_in_cart, remove_selected_product_from_cart, \
     change_product_quantity
 
@@ -35,7 +34,7 @@ def remove_product_from_cart(request, pk: int):
     """Удаляет товар из корзины"""
 
     remove_selected_product_from_cart(pk)
-    if Cart.objects.filter(user=request.user).count() < 1:
+    if get_cart_products_by_user(request).count() < 1:
         return HttpResponseRedirect(reverse('index'))
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

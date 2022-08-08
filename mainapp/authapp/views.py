@@ -5,23 +5,16 @@ from django.contrib.auth.decorators import login_required
 
 from core.view_logger import view_logger
 from .forms import UserLoginForm, UserRegisterForm, UserEditForm
-from .services.crud import save_new_user_data, activate_new_user
+from .services.crud import save_new_user_data, activate_new_user, edit_user_data, login_user_on_site
 
 
 @view_logger
 def user_login(request):
     """ Логинит пользователя на сайте"""
-
-    login_form = UserLoginForm(data=request.POST)
-    if request.method == 'POST' and login_form.is_valid():
-        username = request.POST['username']
-        password = request.POST['password']
-        user = auth.authenticate(username=username, password=password)
-        if user and user.is_active:
-            auth.login(request, user)
-            return HttpResponseRedirect(reverse('index'))
-    context = {'login_form': login_form}
-    return render(request, 'authapp/login.html', context)
+    if request.method == 'POST':
+        return login_user_on_site(request)
+    else:
+        return render(request, 'authapp/login.html', {'login_form': UserLoginForm()})
 
 
 @view_logger
@@ -38,29 +31,19 @@ def edit_user_profile(request):
     """Редактирует профиль пользователя"""
 
     if request.method == 'POST':
-        edit_form = UserEditForm(request.POST, request.FILES, instance=request.user)
-        if edit_form.is_valid():
-            edit_form.save()
-            return HttpResponseRedirect(reverse('auth:edit_user_profile'))
+        return edit_user_data(request)
     else:
-        context = {
-            'title': 'Редактирование профиля',
-            'edit_form': UserEditForm(instance=request.user),
-        }
-        return render(request, 'authapp/edit.html', context)
+        return render(request, 'authapp/edit.html', {'edit_form': UserEditForm(instance=request.user)})
 
 
-@view_logger
+# @view_logger
 def registers_new_user(request):
     """ Регистрирует нового пользователя """
 
     if request.method == 'POST':
         return save_new_user_data(request)
     else:
-        context = {
-            'register_form': UserRegisterForm(),
-        }
-    return render(request, 'authapp/register.html', context)
+        return render(request, 'authapp/register.html', {'register_form': UserRegisterForm()})
 
 
 @view_logger

@@ -1,23 +1,61 @@
+import logging
+
 from django.urls import reverse
 from django.shortcuts import HttpResponseRedirect, render
 from django.contrib import auth
 
-from authapp.forms import UserRegisterForm
+from authapp.forms import UserRegisterForm, UserEditForm, UserLoginForm
 from authapp.models import User
 from authapp.services.email import send_verification_email
+
+logger = logging.getLogger('django_logger')
+
+
+def login_user_on_site(request):
+    try:
+        login_form = UserLoginForm(data=request.POST)
+        if login_form.is_valid():
+            username = request.POST['username']
+            password = request.POST['password']
+            user = auth.authenticate(username=username, password=password)
+            if user and user.is_active:
+                auth.login(request, user)
+                return HttpResponseRedirect(reverse('index'))
+        else:
+            return render(request, 'authapp/login.html', {'login_form': login_form})
+    except ValueError as e:
+        logger.error(e)
 
 
 def save_new_user_data(request) -> HttpResponseRedirect:
     """" Сохраняет данные нового юзера и отправляет ему письмо для подтверждения регистрации.
     Возвращает редирект на страницу товаров """
+    try:
+        register_form = UserRegisterForm(request.POST, request.FILES)
+        if register_form.is_valid:
+            user = register_form.save()
+            send_verification_email(user)
+            return HttpResponseRedirect(reverse('productapp:products'))
+        else:
+            print(register_form.errors)
+            return HttpResponseRedirect(reverse('productapp:products'))
+    except ValueError as e:
+        logger.error(e)
 
-    register_form = UserRegisterForm(request.POST, request.FILES)
-    if register_form.is_valid:
-        user = register_form.save()
-        send_verification_email(user)
-        return HttpResponseRedirect(reverse('productapp:products'))
-    else:
-        return HttpResponseRedirect(reverse('productapp:products'))
+
+def edit_user_data(request) -> HttpResponseRedirect:
+    """
+    Вносит изменения в личные данные юзера.
+    Возвращает редирект на страницу измененния данных, но уже с новыми данными
+    """
+
+    try:
+        edit_form = UserEditForm(request.POST, request.FILES, instance=request.user)
+        if edit_form.is_valid():
+            edit_form.save()
+            return HttpResponseRedirect(reverse('auth:edit_user_profile'))
+    except ValueError as e:
+        logger.error(e)
 
 
 def activate_new_user(request, email: str, activation_key: str) -> str:
@@ -41,5 +79,5 @@ def activate_new_user(request, email: str, activation_key: str) -> str:
             return 'Ваш ключ активации истек. Мы отправили Вам новый. Провербте свой почтовый ящик'
         else:
             return f'error activation user: {user}'
-    except Exception as ex:
-        return f'error activation user : {ex.args}'
+    except (ValueError, TypeError) as e:
+        logger.error(e)

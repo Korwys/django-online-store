@@ -8,7 +8,7 @@ from .services.crud import filtering_products_by_gender, filtering_product_by_ca
 
 @view_logger
 def get_all_products(request):
-    """Выводит всe товары на главной странице каталога"""
+    """Вернет всe товары на главной странице каталога"""
 
     context = {
         'title': 'Каталог',
@@ -20,7 +20,7 @@ def get_all_products(request):
 
 @view_logger
 def get_products_by_gender(request, pk: int):
-    """ Выводит список товаров при фильтрации по полу"""
+    """ Вернет список товаров при фильтрации по полу"""
 
     context = filtering_products_by_gender(request, pk)
     return render(request, 'productapp/products.html', context)
@@ -28,7 +28,7 @@ def get_products_by_gender(request, pk: int):
 
 @view_logger
 def get_products_by_category(request, pk: int):
-    """ Выводит список товаров при фильтрации по категории"""
+    """ Вернет список товаров при фильтрации по категории"""
 
     context = filtering_product_by_category(request, pk)
     return render(request, 'productapp/products.html', context)
@@ -36,7 +36,7 @@ def get_products_by_category(request, pk: int):
 
 @view_logger
 def get_single_product_page(request, pk: int):
-    """ Выводит карточку товара,а так же, связанные товары сортированные по полу,
+    """ Вернет карточку товара,а так же, связанные товары сортированные по полу,
         который соответсвует товару из карточки"""
 
     product = get_object_or_404(Product, pk=pk)

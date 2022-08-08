@@ -1,9 +1,12 @@
+import logging
 import smtplib
 
 from django.urls import reverse
 
 from mainapp import settings
 from mainapp.settings import env
+
+logger = logging.getLogger('django_logger')
 
 
 def send_verification_email(user):
@@ -16,12 +19,14 @@ def send_verification_email(user):
 
     message = f'Для подтверждения учетной записи {user.username} на портале {settings.DOMAIN_NAME} ' \
               f'перейдите по ссылке:{settings.DOMAIN_NAME}{email_verify_link}'
-
-    server = smtplib.SMTP("smtp.gmail.com", 587)
-    server.starttls()
+    try:
+        server = smtplib.SMTP("smtp.gmail.com", 587)
+        server.starttls()
+    except ConnectionError as e:
+        logging.error('Проблема с подключением к gmail')
 
     try:
         server.login(sender, sender_password)
         server.sendmail(sender, user.email, message.encode('utf-8'))
-    except Exception as ex:
-        return f"{ex} Что-то не так! Проверь логин/пароль."
+    except ValueError as e:
+        logging.error(e)

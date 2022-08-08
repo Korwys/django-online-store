@@ -12,7 +12,7 @@ def save_selected_product(request, pk: int) -> None:
     """Сохраняет выбранный товар в WishList db"""
     try:
         product = get_object_or_404(Product, pk=pk)
-        wishlist_item = WishList(user=request.user, product=product)
+        wishlist_item = WishList(user=request.user, produc=product)
         wishlist_item.save()
     except TypeError as e:
         logger.error(e)
@@ -25,6 +25,7 @@ def remove_selected_product(pk: int) -> None:
         product.delete()
     except TypeError as e:
         logger.error(e)
+        print('ok')
 
 
 def count_whishlist_products_by_user(request) -> int:
