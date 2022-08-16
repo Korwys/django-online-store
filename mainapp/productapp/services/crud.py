@@ -1,8 +1,9 @@
 import logging
+import random
 
 from django.core.paginator import Paginator
 
-from productapp.models import Product
+from productapp.models import Product, Brand
 
 logger = logging.getLogger('django_logger')
 
@@ -103,3 +104,12 @@ def paginate(request, *args, pk=None) -> Paginator:
             return paginator.get_page(page_number)
     except (TypeError, ValueError) as e:
         logger.error(e)
+
+
+def get_all_brands():
+    return Brand.objects.all()
+
+
+def get_hot_product():
+    product = Product.objects.all()
+    return random.sample(list(product), 3)

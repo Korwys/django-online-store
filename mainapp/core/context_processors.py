@@ -40,3 +40,4 @@ def get_user_orders(request):
         return {'user_orders': Order.objects.filter(user=request.user)}
     else:
         return {'user_orders': ' '}
+

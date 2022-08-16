@@ -1,9 +1,9 @@
-from django.shortcuts import render, reverse, HttpResponseRedirect
+from django.shortcuts import render, HttpResponseRedirect
 
 from core.view_logger import view_logger
 from orderapp.forms import OrderCreateForm
 from orderapp.services.crud import get_all_orders_by_user, \
-    change_order_status, transfer_products_from_cart_to_orderitem, create_new_user_order
+    change_order_status, create_new_user_order
 
 
 @view_logger

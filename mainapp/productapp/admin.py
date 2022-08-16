@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import ProductCategory, Product, Gallery, Genders
+from .models import ProductCategory, Product, Gallery, Genders, Brand
 
 
 @admin.register(ProductCategory)
@@ -10,6 +10,11 @@ class ProductCategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Genders)
 class GendersAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Brand)
+class BrandAdmin(admin.ModelAdmin):
     pass
 
 

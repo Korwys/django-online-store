@@ -36,9 +36,8 @@
         <div class="w-100 d-flex justify-content-between">
             <div>
                 <i class="fa fa-envelope mx-2"></i>
-                <a class="navbar-sm-brand text-light text-decoration-none" href="mailto:info@company.com">info@company.com</a>
-                <i class="fa fa-phone mx-2"></i>
-                <a class="navbar-sm-brand text-light text-decoration-none" href="tel:010-020-0340">010-020-0340</a>
+                <a class="navbar-sm-brand text-light text-decoration-none" href="mailto:djnagoproject@gmail.com">djnagoproject@gmail.com</a>
+
             </div>
             <div>
                 <a class="text-light" href="https://fb.com/templatemo" target="_blank" rel="sponsored"><i
@@ -129,12 +128,20 @@
                             <i class="fa fa-fw fa-user text-dark mr-3"></i>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            {% if user.is_authenticated %}
+                            {% if user.is_superuser %}
+                            <li><a class="dropdown-item" href="{% url 'auth:edit_user_profile' %}">Профиль</a></li>
+                            <li><a class="dropdown-item" href="/admin">Админка</a></li>
+                            <li><a class="dropdown-item" href="{% url 'auth:user_logout' %}">Выход</a></li>
+                            {% elif user.is_authenticated%}
                             <li><a class="dropdown-item" href="{% url 'auth:edit_user_profile' %}">Профиль</a></li>
                             <li><a class="dropdown-item" href="{% url 'auth:user_logout' %}">Выход</a></li>
                             {% else %}
                             <li><a class="dropdown-item" href="{% url 'auth:user_login' %}">Войти</a></li>
                             {% endif %}
+
+
+
+
                         </ul>
                 </div>
 
@@ -175,44 +182,33 @@
         <div class="row">
 
             <div class="col-md-4 pt-5">
-                <h2 class="h2 text-success border-bottom pb-3 border-light logo">Zay Shop</h2>
+                <h2 class="h2 text-success border-bottom pb-3 border-light logo">Django Shop</h2>
                 <ul class="list-unstyled text-light footer-link-list">
-                    <li>
-                        <i class="fas fa-map-marker-alt fa-fw"></i>
-                        123 Consectetur at ligula 10660
-                    </li>
-                    <li>
-                        <i class="fa fa-phone fa-fw"></i>
-                        <a class="text-decoration-none" href="tel:010-020-0340">010-020-0340</a>
-                    </li>
+
                     <li>
                         <i class="fa fa-envelope fa-fw"></i>
-                        <a class="text-decoration-none" href="mailto:info@company.com">info@company.com</a>
+                        <a class="text-decoration-none" href="mailto:info@company.com">djnagoproject@gmail.com</a>
                     </li>
                 </ul>
             </div>
 
             <div class="col-md-4 pt-5">
-                <h2 class="h2 text-light border-bottom pb-3 border-light">Products</h2>
+                <h2 class="h2 text-light border-bottom pb-3 border-light">Категории</h2>
                 <ul class="list-unstyled text-light footer-link-list">
-                    <li><a class="text-decoration-none" href="#">Luxury</a></li>
-                    <li><a class="text-decoration-none" href="#">Sport Wear</a></li>
-                    <li><a class="text-decoration-none" href="#">Men's Shoes</a></li>
-                    <li><a class="text-decoration-none" href="#">Women's Shoes</a></li>
-                    <li><a class="text-decoration-none" href="#">Popular Dress</a></li>
-                    <li><a class="text-decoration-none" href="#">Gym Accessories</a></li>
-                    <li><a class="text-decoration-none" href="#">Sport Shoes</a></li>
+                    {% for item in categories%}
+                    <li><a class="text-decoration-none" href="{% url 'productapp:category' item.pk %}">{{item.name}}</a></li>
+                    {% endfor %}
+
                 </ul>
             </div>
 
             <div class="col-md-4 pt-5">
-                <h2 class="h2 text-light border-bottom pb-3 border-light">Further Info</h2>
+                <h2 class="h2 text-light border-bottom pb-3 border-light">Структура сайта</h2>
                 <ul class="list-unstyled text-light footer-link-list">
-                    <li><a class="text-decoration-none" href="#">Home</a></li>
-                    <li><a class="text-decoration-none" href="#">About Us</a></li>
-                    <li><a class="text-decoration-none" href="#">Shop Locations</a></li>
-                    <li><a class="text-decoration-none" href="#">FAQs</a></li>
-                    <li><a class="text-decoration-none" href="#">Contact</a></li>
+                    <li><a class="text-decoration-none" href="#">Главная</a></li>
+                    <li><a class="text-decoration-none" href="#">О нас</a></li>
+                    <li><a class="text-decoration-none" href="#">Каталог</a></li>
+                    <li><a class="text-decoration-none" href="#">Контакты</a></li>
                 </ul>
             </div>
 
@@ -258,7 +254,7 @@
             <div class="row pt-2">
                 <div class="col-12">
                     <p class="text-left text-light">
-                        Copyright &copy; 2021 Company Name
+                        Copyright &copy; 2022 Django
                         | Designed by <a rel="sponsored" href="https://templatemo.com" target="_blank">TemplateMo</a>
                     </p>
                 </div>

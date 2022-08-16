@@ -1,13 +1,15 @@
 from django.shortcuts import render
 
 from core.view_logger import view_logger
+from productapp.services.crud import get_hot_product
 
 
-@view_logger
+# @view_logger
 def index(request):
     title = 'Главная'
     context = {
         'title': title,
+        'hot_products':get_hot_product()
     }
     return render(request, 'mainapp/index.html', context)
 

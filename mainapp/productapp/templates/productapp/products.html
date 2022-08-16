@@ -91,10 +91,13 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="card-body">
-                            <a href="shop-single.html" class="h3 text-decoration-none">{{product.name}}</a>
+                        <div class="text-center">
+                            <a href="shop-single.html" class="h3 text-decoration-none"><b>{{product.brand}}</b></a>
+                            <br>
+                            <a href="shop-single.html" class="h3 text-decoration-none"><small>{{product.category}}</small></a>
+                            <br>
+                            <a href="shop-single.html" class="h3 text-decoration-none"><small>{{product.name}}</small></a></a>
                             <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
-                                <li>M/L/X/XL</li>
                                 <li class="pt-2">
                                     <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
                                     <span class="product-color-dot color-dot-blue float-left rounded-circle ml-1"></span>
@@ -103,16 +106,8 @@
                                     <span class="product-color-dot color-dot-green float-left rounded-circle ml-1"></span>
                                 </li>
                             </ul>
-                            <ul class="list-unstyled d-flex justify-content-center mb-1">
-                                <li>
-                                    <i class="text-warning fa fa-star"></i>
-                                    <i class="text-warning fa fa-star"></i>
-                                    <i class="text-warning fa fa-star"></i>
-                                    <i class="text-muted fa fa-star"></i>
-                                    <i class="text-muted fa fa-star"></i>
-                                </li>
-                            </ul>
-                            <p class="text-center mb-0">{{ product.price }}&nbspруб</p>
+
+                            <p class="text-center mb-0"><b>{{ product.price }}&nbsp₽</b></p>
                         </div>
                     </div>
                 </div>
@@ -145,11 +140,8 @@
     <div class="container my-4">
         <div class="row text-center py-3">
             <div class="col-lg-6 m-auto">
-                <h1 class="h1">Our Brands</h1>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    Lorem ipsum dolor sit amet.
-                </p>
+                <h1 class="h1">Наши бренды</h1>
+
             </div>
             <div class="col-lg-9 m-auto tempaltemo-carousel">
                 <div class="row d-flex flex-row">
@@ -171,26 +163,13 @@
                                 <!--First slide-->
                                 <div class="carousel-item active">
                                     <div class="row">
+                                        {% for brand in brands|slice:":3"%}
                                         <div class="col-3 p-md-5">
                                             <a href="#"><img class="img-fluid brand-img"
-                                                             src="{% static 'mainapp/img/brand_01.png' %}"
+                                                             src="/media/{{brand.image}}"
                                                              alt="Brand Logo"></a>
                                         </div>
-                                        <div class="col-3 p-md-5">
-                                            <a href="#"><img class="img-fluid brand-img"
-                                                             src="{% static 'mainapp/img/brand_02.png' %}"
-                                                             alt="Brand Logo"></a>
-                                        </div>
-                                        <div class="col-3 p-md-5">
-                                            <a href="#"><img class="img-fluid brand-img"
-                                                             src="{% static 'mainapp/img/brand_03.png' %}"
-                                                             alt="Brand Logo"></a>
-                                        </div>
-                                        <div class="col-3 p-md-5">
-                                            <a href="#"><img class="img-fluid brand-img"
-                                                             src="{% static 'mainapp/img/brand_04.png' %}"
-                                                             alt="Brand Logo"></a>
-                                        </div>
+                                        {% endfor %}
                                     </div>
                                 </div>
                                 <!--End First slide-->
@@ -198,53 +177,28 @@
                                 <!--Second slide-->
                                 <div class="carousel-item">
                                     <div class="row">
+                                        {% for brand in brands|slice:"4:7"%}
                                         <div class="col-3 p-md-5">
                                             <a href="#"><img class="img-fluid brand-img"
-                                                             src="{% static 'mainapp/img/brand_01.png' %}"
+                                                             src="/media/{{brand.image}}"
                                                              alt="Brand Logo"></a>
                                         </div>
-                                        <div class="col-3 p-md-5">
-                                            <a href="#"><img class="img-fluid brand-img"
-                                                             src="{% static 'mainapp/img/brand_02.png' %}"
-                                                             alt="Brand Logo"></a>
-                                        </div>
-                                        <div class="col-3 p-md-5">
-                                            <a href="#"><img class="img-fluid brand-img"
-                                                             src="{% static 'mainapp/img/brand_03.png' %}"
-                                                             alt="Brand Logo"></a>
-                                        </div>
-                                        <div class="col-3 p-md-5">
-                                            <a href="#"><img class="img-fluid brand-img"
-                                                             src="{% static 'mainapp/img/brand_04.png' %}"
-                                                             alt="Brand Logo"></a>
+                                        {% endfor %}
                                         </div>
                                     </div>
                                 </div>
-                                <!--End Second slide-->
+<!--                                End Second slide-->
 
                                 <!--Third slide-->
                                 <div class="carousel-item">
                                     <div class="row">
+                                        {% for brand in brands|slice:"7:10"%}
                                         <div class="col-3 p-md-5">
                                             <a href="#"><img class="img-fluid brand-img"
-                                                             src="{% static 'mainapp/img/brand_01.png' %}"
+                                                             src="/media/{{brand.image}}"
                                                              alt="Brand Logo"></a>
                                         </div>
-                                        <div class="col-3 p-md-5">
-                                            <a href="#"><img class="img-fluid brand-img"
-                                                             src="{% static 'mainapp/img/brand_02.png' %}"
-                                                             alt="Brand Logo"></a>
-                                        </div>
-                                        <div class="col-3 p-md-5">
-                                            <a href="#"><img class="img-fluid brand-img"
-                                                             src="{% static 'mainapp/img/brand_03.png' %}"
-                                                             alt="Brand Logo"></a>
-                                        </div>
-                                        <div class="col-3 p-md-5">
-                                            <a href="#"><img class="img-fluid brand-img"
-                                                             src="{% static 'mainapp/img/brand_04.png' %}"
-                                                             alt="Brand Logo"></a>
-                                        </div>
+                                        {% endfor %}
                                     </div>
                                 </div>
                                 <!--End Third slide-->
