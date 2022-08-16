@@ -3,10 +3,10 @@ from django.shortcuts import render, get_object_or_404
 from core.view_logger import view_logger
 from .models import Product
 from .services.crud import filtering_products_by_gender, filtering_product_by_category, filtering_related_products, \
-    paginate
+    paginate, get_all_brands
 
 
-@view_logger
+# @view_logger
 def get_all_products(request):
     """Вернет всe товары на главной странице каталога"""
 
@@ -14,6 +14,7 @@ def get_all_products(request):
         'title': 'Каталог',
         'products': paginate(request),
         'current_sort': request.GET.get('sorting'),
+        'brands': get_all_brands()
     }
     return render(request, 'productapp/products.html', context)
 

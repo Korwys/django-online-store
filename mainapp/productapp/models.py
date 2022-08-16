@@ -1,6 +1,33 @@
 from django.db import models
 
 
+class Brand(models.Model):
+    name = models.CharField(
+        max_length=50,
+        verbose_name='Бренд',
+        unique=True,
+        default=None,
+    )
+
+    image = models.ImageField(
+        upload_to='brand_images',
+        default=True,
+    )
+
+    is_active = models.BooleanField(
+        verbose_name='Стояние',
+        default=True,
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        db_table = 'brands'
+        verbose_name = 'Бренд'
+        verbose_name_plural = 'Бренды'
+
+
 class ProductCategory(models.Model):
     name = models.CharField(
         verbose_name='Название',
@@ -16,6 +43,11 @@ class ProductCategory(models.Model):
 
     is_active = models.BooleanField(
         verbose_name='Стояние',
+        default=True,
+    )
+
+    image = models.ImageField(
+        upload_to='category_images',
         default=True,
     )
 
@@ -59,10 +91,15 @@ class Product(models.Model):
         max_length=100,
     )
 
+    brand = models.ForeignKey(
+        Brand,
+        on_delete=models.CASCADE,
+    )
+
     price = models.DecimalField(
         verbose_name='Цена',
         max_digits=10,
-        decimal_places=2,
+        decimal_places=0,
         default=0,
     )
 
