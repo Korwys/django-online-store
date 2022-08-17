@@ -5,4 +5,5 @@ from wishapp.models import WishList
 
 @admin.register(WishList)
 class WishListAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['user', 'product', 'created_at']
+    search_fields = ['user']

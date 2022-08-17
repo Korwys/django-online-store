@@ -5,4 +5,5 @@ from cartapp.models import Cart
 
 @admin.register(Cart)
 class CartAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['user', 'product', 'created_at']
+    search_fields = ['user']
