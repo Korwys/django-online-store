@@ -9,15 +9,15 @@ from mainapp.settings import env
 logger = logging.getLogger('django_logger')
 
 
-def send_verification_email(user):
+def send_verification_email(email, activation_key, username):
     """Отправляет письмо юзеру на указанный им в форме email для подтверждения регистрации"""
 
     sender = env('GMAIL_USER_NAME')
     sender_password = env('GMAIL_USER_PASSWORD')
 
-    email_verify_link = reverse('auth:confirm_new_user_registration', args=[user.email, user.activation_key])
+    email_verify_link = reverse('auth:confirm_new_user_registration', args=[email, activation_key])
 
-    message = f'Для подтверждения учетной записи {user.username} на портале {settings.DOMAIN_NAME} ' \
+    message = f'Для подтверждения учетной записи {username} на портале {settings.DOMAIN_NAME} ' \
               f'перейдите по ссылке:{settings.DOMAIN_NAME}{email_verify_link}'
     try:
         server = smtplib.SMTP("smtp.gmail.com", 587)
@@ -27,6 +27,6 @@ def send_verification_email(user):
 
     try:
         server.login(sender, sender_password)
-        server.sendmail(sender, user.email, message.encode('utf-8'))
+        server.sendmail(sender, email, message.encode('utf-8'))
     except ValueError as e:
         logging.error(e)

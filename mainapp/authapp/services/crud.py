@@ -7,6 +7,7 @@ from django.contrib import auth
 from authapp.forms import UserRegisterForm, UserEditForm, UserLoginForm
 from authapp.models import User
 from authapp.services.email import send_verification_email
+from authapp.tasks import send_activation_link_on_email
 
 logger = logging.getLogger('django_logger')
 
@@ -34,7 +35,7 @@ def save_new_user_data(request) -> HttpResponseRedirect:
         register_form = UserRegisterForm(request.POST, request.FILES)
         if register_form.is_valid:
             user = register_form.save()
-            send_verification_email(user)
+            send_activation_link_on_email.delay(user.email, user.activation_key, user.username)
             return HttpResponseRedirect(reverse('productapp:products'))
         else:
             print(register_form.errors)
@@ -75,7 +76,7 @@ def activate_new_user(request, email: str, activation_key: str) -> str:
             return 'Ранее Вы уже подтвердили регистрацию!'
         elif user.activation_key == activation_key and user.check_is_activation_key_expired() and \
                 user.is_active is not True:
-            send_verification_email(user)
+            send_activation_link_on_email.delay(user.email, user.activation_key, user.username)
             return 'Ваш ключ активации истек. Мы отправили Вам новый. Провербте свой почтовый ящик'
         else:
             return f'error activation user: {user}'
