@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.db.models import Sum
 
 from productapp.models import Product
 
@@ -45,8 +46,9 @@ class Cart(models.Model):
     @property
     def total_quantity(self):
         """Метод возвращает сумму всех товаров в корзине"""
-        cart_user_list = Cart.objects.filter(user=self.user)
-        return sum(list(map(lambda x: x.quantity, cart_user_list)))
+        cart_user_list = Cart.objects.filter(user=self.user).aggregate(Sum('quantity'))
+        # return  sum(list(map(lambda x: x.quantity, cart_user_list)))
+        return cart_user_list['quantity__sum']
 
     @property
     def total_cost(self):

@@ -101,18 +101,18 @@
                 </a>
                 <a class="nav-icon position-relative text-decoration-none" href="{% url 'order:orders' %}">
                     <i class="fa fa-fw fa-box text-dark mr-2"></i>
-                    <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-white text-dark">{{user_orders.0.get_orders_quantity}}
+                    <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-white text-dark">{{user_orders}}
                         </span>
                 </a>
                 <a class="nav-icon position-relative text-decoration-none" href="{% url 'wishlist:wishlist' %}">
                     <i class="fa fa-fw fa-heart text-dark mr-2"></i>
-                    <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-white text-dark">{{wishlist_products.0.get_total_quantity}}
+                    <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-white text-dark">{{wishlist_products}}
                         </span>
                 </a>
 
                 <a class="nav-icon position-relative text-decoration-none" href="{% url 'cartapp:get_user_cart' %}">
                     <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
-                    <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-white text-dark">{{total_products_quantity.0.total_quantity}}
+                    <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-white text-dark">{{total_products_quantity}}
                         </span>
                 </a>
                 <div class="dropdown">

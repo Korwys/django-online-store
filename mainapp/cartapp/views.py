@@ -14,7 +14,7 @@ def get_user_cart(request):
     """Отображает товары в корзине пользователя"""
 
     context = {
-        'user_products': get_cart_products_by_user(request)
+        'user_products': get_cart_products_by_user(request),
     }
     return render(request, 'cartapp/cart.html', context)
 

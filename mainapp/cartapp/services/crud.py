@@ -2,6 +2,7 @@ import logging
 
 from django.shortcuts import get_object_or_404, Http404
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Sum
 
 from cartapp.models import Cart
 from productapp.models import Product
@@ -12,7 +13,7 @@ logger = logging.getLogger('django_logger')
 def get_cart_products_by_user(request):
     """ Возвращает список товаров в корзине пользователя"""
 
-    return Cart.objects.filter(user=request.user)
+    return Cart.objects.filter(user=request.user).select_related('product')
 
 
 def add_selected_product_in_cart(request, pk: int) -> None:
@@ -30,7 +31,7 @@ def add_selected_product_in_cart(request, pk: int) -> None:
         logger.error(e)
 
 
-def remove_selected_product_from_cart(pk: int):
+def remove_selected_product_from_cart(pk: int) -> None:
     """Удаляет выбранный товар из корзины"""
 
     try:
@@ -55,4 +56,3 @@ def change_product_quantity(request, pk: int, quantity: int) -> Cart:
         return Cart.objects.filter(user=request.user).order_by('product__price')
     except (TypeError, ValueError, Http404, ObjectDoesNotExist) as e:
         logger.error(e)
-

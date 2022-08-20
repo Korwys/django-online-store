@@ -70,9 +70,9 @@ class Order(models.Model):
 
     def get_orders_quantity(self):
         """Если количество активных заказов больше 0, то вернет их количество, иначе пустая строка"""
-
-        if Order.objects.filter(user=self.user, is_active=True).count() >0:
-            return Order.objects.filter(user=self.user, is_active=True).count()
+        order_count = Order.objects.filter(user=self.user, is_active=True).count()
+        if order_count >0:
+            return order_count
         else:
             return ""
 

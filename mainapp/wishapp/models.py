@@ -29,4 +29,4 @@ class WishList(models.Model):
     @property
     def get_total_quantity(self):
         """Метод возвращает количество товарных позиции в Избранном"""
-        return WishList.objects.filter(user=self.user).count()
+        return WishList.objects.filter(user=self.user).only('product').count()
