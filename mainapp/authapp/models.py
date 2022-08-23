@@ -6,6 +6,8 @@ from django.utils.timezone import now
 
 
 class User(AbstractUser):
+    """Модель описывает пользователя"""
+
     avatar = models.ImageField(
         upload_to='user_avatar',
         blank=True,
@@ -33,6 +35,9 @@ class User(AbstractUser):
     )
 
     def check_is_activation_key_expired(self):
+        """Метод проверяет не вышел ли срок у ключа активации,
+        который был отправлен пользователю на email при регистрации"""
+
         if now() <= self.activation_key_expires:
             return False
         else:

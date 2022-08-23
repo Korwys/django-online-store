@@ -2,71 +2,20 @@ import logging
 import random
 
 from django.core.paginator import Paginator
+from django.db.models import Q
 
-from productapp.models import Product, Brand
+from productapp.models import Product, Brand, ProductCategory
 
 logger = logging.getLogger('django_logger')
 
 
-def filtering_products_by_gender(request, pk: int) -> dict:
-    """Фильтрует список товаров по выбранному полу"""
-    try:
-        if 'category' in request.META.get('HTTP_REFERER'):
-            category_from_request = request.META.get('HTTP_REFERER')[-2]
-            products = Product.filter(gender__pk=pk, category__pk=category_from_request)\
-                .select_related('brand','category')\
-                .only('name', 'price', 'image','brand__name','category__name')
-            context = {
-                'products': paginate(request, products),
-                'current_sort': request.GET.get('sorting'),
-            }
-            return context
-        else:
-            products_by_gender = Product.objects.filter(gender__pk=pk)\
-                .select_related('brand','category')\
-                .only('name', 'price', 'image','brand__name','category__name')
-            categories = set(item.category for item in products_by_gender)
-            context = {
-                'products': paginate(request, products_by_gender, pk=pk),
-                'current_sort': request.GET.get('sorting'),
-                'categories': categories,
-            }
-            return context
-    except (TypeError, ValueError) as e:
-        logger.error(e)
-
-
-def filtering_product_by_category(request, pk: int) -> dict:
-    """Фильтрует список товаров по выбранной категории"""
-    try:
-        if 'gender' in request.META.get('HTTP_REFERER'):
-            gender_id = request.META.get('HTTP_REFERER')[-2]
-            products = Product.objects.filter(category__pk=pk, gender__pk=gender_id).select_related('brand','category')\
-                .only('name', 'price', 'image','brand__name','category__name')
-            context = {
-                'products': paginate(request),
-                'current_sort': request.GET.get('sorting')
-            }
-            return context
-        else:
-            products_by_category = Product.objects.filter(category__pk=pk).select_related('brand','category')\
-                .only('name', 'price', 'image','brand__name','category__name')
-            context = {
-                'products': paginate(request, products_by_category, pk=pk),
-                'current_sort': request.GET.get('sorting'),
-            }
-            return context
-    except (TypeError, ValueError) as e:
-        logger.error(e)
-
-
 def filtering_related_products(product) -> Product:
-    """ Фильтрует список товаров на основе пола товара из карточки."""
+    """ Вернет список товаров отфильтрованный по такому же гендеру как и у товара из карточки"""
 
     return Product.objects.filter(gender__pk=product.gender.pk).exclude(name=product.name)
 
 
-def sorting_products_by_type(request, pk=None) -> Product:
+def sorting_products_by_type(request) -> Product:
     """ Сортирует товары по алфавиту или по цене """
 
     all_sorting_types = {
@@ -75,40 +24,34 @@ def sorting_products_by_type(request, pk=None) -> Product:
         'price': 'price',
         'price_desc': '-price'
     }
-    try:
-        get_sorting_type = request.GET.get('sorting')
-        if 'gender' in request.path and get_sorting_type:
-            return Product.objects.select_related('brand', 'category')\
-                .only('name', 'price', 'image', 'brand__name','category__name').filter(gender__pk=pk)\
-                .order_by(all_sorting_types[get_sorting_type])
+    income_values = {
+        'brand': request.GET.get('brand'),
+        'gender': request.GET.get('gender'),
+        'category': request.GET.get('category')
+    }
 
-        elif 'gender' in request.path:
-            return Product.objects.select_related('brand', 'category')\
-                .only('name', 'price', 'image','brand__name','category__name').filter(gender__pk=pk)
+    query = []
+    for i in income_values.keys():
+        if i == 'brand' and income_values[i] != "" and income_values[i] is not None:
+            query.append(Q(brand__id=income_values[i]))
+        if i == 'category' and income_values[i] != "" and income_values[i] is not None:
+            query.append(Q(category__id=income_values[i]))
+        if i == 'gender' and income_values[i] != "" and income_values[i] is not None:
+            query.append(Q(gender__id=income_values[i]))
 
-        if get_sorting_type and pk:
-            return Product.objects.select_related('brand', 'category')\
-                .only('name', 'price', 'image', 'brand__name','category__name')\
-                .filter(category__pk=pk).order_by(all_sorting_types[get_sorting_type])
+    get_sorting_type = request.GET.get('sorting')
 
-        if get_sorting_type is not None:
-            return Product.objects.all().select_related('brand', 'category')\
-                .only('name', 'price', 'image','brand__name','category__name')\
-                .order_by(all_sorting_types[get_sorting_type])
-
-        else:
-            return Product.objects.all().select_related('brand', 'category')\
-                .only('name', 'price', 'image','brand__name','category__name')
-
-    except (TypeError, ValueError) as e:
-        logger.error(e)
+    return Product.objects.select_related('brand', 'category') \
+        .only('name', 'price', 'image', 'brand__name', 'category__name') \
+        .filter(*query) \
+        .order_by(all_sorting_types[get_sorting_type])
 
 
-def paginate(request, *args, pk=None) -> Paginator:
+def paginate(request, *args) -> Paginator:
     """ Реализиует пагинацию на страницах"""
     try:
         if request.GET.get('sorting'):
-            paginator = Paginator(sorting_products_by_type(request, pk), 6)
+            paginator = Paginator(sorting_products_by_type(request), 6)
             page_number = request.GET.get('page')
             return paginator.get_page(page_number)
         elif args:
@@ -125,10 +68,14 @@ def paginate(request, *args, pk=None) -> Paginator:
         logger.error(e)
 
 
-def get_all_brands():
+def get_all_brands() -> Brand:
     return Brand.objects.all()
 
 
-def get_hot_product():
+def get_hot_product() -> list:
     product = Product.objects.all().only('image')
     return random.sample(set(product), 3)
+
+
+def get_all_category() -> ProductCategory:
+    return ProductCategory.objects.all().only('name','image')

@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     'social_django',
     'debug_toolbar',
     'template_profiler_panel',
+    'django_filters',
+    'crispy_forms',
 
     'mainapp',
     'productapp',
@@ -128,9 +130,6 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
 
-                'core.context_processors.genders_list',
-                'core.context_processors.product_categories',
-                'core.context_processors.products',
                 'core.context_processors.cart_total_quantity',
                 'core.context_processors.get_user_products_in_wishlist',
                 'core.context_processors.get_user_orders',
@@ -212,6 +211,7 @@ if DEBUG:
     def show_toolbar(request):
         return True
 
+
     DEBUG_TOOLBAR_CONFIG = {
         'SHOW_TOOLBAR_CALLBACK': show_toolbar,
     }
@@ -231,3 +231,10 @@ if DEBUG:
         'debug_toolbar.panels.profiling.ProfilingPanel',
         'template_profiler_panel.panels.template.TemplateProfilerPanel',
     ]
+
+#django-crispy-forms
+#https://django-crispy-forms.readthedocs.io/en/latest/install.html
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
+#End django-crispy-forms

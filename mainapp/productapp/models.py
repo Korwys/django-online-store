@@ -2,6 +2,8 @@ from django.db import models
 
 
 class Brand(models.Model):
+    """Модель описывает бренд."""
+
     name = models.CharField(
         max_length=50,
         verbose_name='Бренд',
@@ -29,6 +31,8 @@ class Brand(models.Model):
 
 
 class ProductCategory(models.Model):
+    """Модель описывает категорию товара"""
+
     name = models.CharField(
         verbose_name='Название',
         max_length=50,
@@ -61,6 +65,8 @@ class ProductCategory(models.Model):
 
 
 class Genders(models.Model):
+    """Модель описывает половой признак товара"""
+
     name = models.CharField(
         verbose_name='Пол',
         max_length=50,
@@ -76,6 +82,8 @@ class Genders(models.Model):
 
 
 class Product(models.Model):
+    """Модель описывает товар"""
+
     category = models.ForeignKey(
         ProductCategory,
         on_delete=models.CASCADE,

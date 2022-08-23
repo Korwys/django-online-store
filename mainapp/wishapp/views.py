@@ -5,7 +5,7 @@ from wishapp.services.crud import save_selected_product, remove_selected_product
     get_all_products_in_wishlist_by_user
 
 
-@view_logger
+# @view_logger
 def get_all_user_wishlist_products(request):
     """Возвращает все продукты которые юзер добавил в избранное"""
 
