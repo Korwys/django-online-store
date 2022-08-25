@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.conf.urls.static import static
 from django.conf import settings
+
 from .views import index, contacts, about
 import debug_toolbar
 
@@ -10,6 +11,7 @@ urlpatterns = [
     path('', index, name='index'),
     path('contacts/', contacts, name='contacts'),
     path('about/', about, name='about'),
+    path('api/v1/', include('api.urls', namespace='api')),
     path('products/', include('productapp.urls', namespace='products')),
     path('cart/', include('cartapp.urls', namespace='cart')),
     path('auth/', include('authapp.urls', namespace='auth')),

@@ -18,7 +18,7 @@ def view_logger(func):
         try:
             with transaction.atomic():
                 return func(request, *args, **kwargs)
-        except Exception as e:
+        except Exception:
             logger.critical(traceback.format_exc())
             return render(request, 'mainapp/error.html',)
 

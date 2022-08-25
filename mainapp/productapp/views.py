@@ -10,7 +10,7 @@ from .services.crud import filtering_related_products,paginate, get_all_brands
 def get_all_products(request):
     """Вернет всe товары на главной странице каталога"""
 
-    filter_obj = ProductFilter(request.GET, queryset=Product.objects.all())
+    filter_obj = ProductFilter(request.GET, queryset=Product.objects.select_related('brand','category','gender'))
 
     context = {
         'title': 'Каталог',

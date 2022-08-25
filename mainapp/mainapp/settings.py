@@ -3,11 +3,10 @@ import os
 from pathlib import Path
 from core.json_loggin_config import CustomJsonFormatter
 
-# Connect environ
-
-
+# Environ settings
 env = environ.Env()
 environ.Env.read_env()
+# End Environ settings
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +36,7 @@ INSTALLED_APPS = [
     'template_profiler_panel',
     'django_filters',
     'crispy_forms',
+    'rest_framework',
 
     'mainapp',
     'productapp',
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'cartapp',
     'wishapp',
     'orderapp',
+    'api',
 
 ]
 
@@ -52,11 +53,16 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.vk.VKOAuth2',
 )
 
+# Auth_User_Model settings
 AUTH_USER_MODEL = 'authapp.User'
 
-# VKAuth
+#Login URL settings
+LOGIN_URL = '/auth/login/'
+
+# VKAuth settings
 SOCIAL_AUTH_VK_OAUTH2_KEY = env('SOCIAL_AUTH_VK_OAUTH2_KEY')
 SOCIAL_AUTH_VK_OAUTH2_SECRET = env('SOCIAL_AUTH_VK_OAUTH2_SECRET')
+# End VKAuth settings
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -70,6 +76,7 @@ MIDDLEWARE = [
 
 ]
 
+# Logging settings
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -115,6 +122,7 @@ LOGGING = {
         },
     },
 }
+# End Logging settings
 
 ROOT_URLCONF = 'mainapp.urls'
 
@@ -140,7 +148,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mainapp.wsgi.application'
 
-# Database
+# Database settings
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -151,6 +159,7 @@ DATABASES = {
         'PORT': env('PORT'),
     }
 }
+# End Database settings
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -170,7 +179,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGIN_URL = '/auth/login/'
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
@@ -182,22 +191,25 @@ USE_I18N = True
 
 USE_TZ = True
 
+#Files settings
+#Static
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
-
+#Media
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+#End Files settings
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # redis settings
 REDIS_HOST = 'localhost'
 REDIS_PORT = '6379'
+#End redis settings
 
 # Celery settings
 CELERY_BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
@@ -206,11 +218,12 @@ CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+#End Celery settings
 
+#django-debug-toolbar settings
 if DEBUG:
     def show_toolbar(request):
-        return True
-
+        return False
 
     DEBUG_TOOLBAR_CONFIG = {
         'SHOW_TOOLBAR_CALLBACK': show_toolbar,
@@ -231,10 +244,9 @@ if DEBUG:
         'debug_toolbar.panels.profiling.ProfilingPanel',
         'template_profiler_panel.panels.template.TemplateProfilerPanel',
     ]
+#End django-debug-toolbar settings
 
 #django-crispy-forms
 #https://django-crispy-forms.readthedocs.io/en/latest/install.html
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-
-
 #End django-crispy-forms
