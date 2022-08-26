@@ -1,29 +1,21 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework import routers
 
-from .views import ProductAPIView, BrandAPIView, CategoryAPIView, GenderAPIView, RetrieveProductAPIView, \
-    RetrieveUpdateDestroyProductAPIView, RetrieveBrandAPIView, RetrieveUpdateDestroyBrandAPIView, \
-    RetrieveUpdateDestroyCategoryAPIView, RetrieveCategoryAPIView, RetrieveGenderAPIView, \
-    RetrieveUpdateDestroyGenderAPIView, OrderListAPIView, RetrieveOrderAPIView
+from .views import BrandAPIView, CategoryAPIView, GenderAPIView, OrderListAPIView, ProductAPIView, \
+    OrderCancelAPIView, OrderCreateAPIView
 
 app_name = 'api'
 
+router = routers.DefaultRouter()
+router.register('products', ProductAPIView)
+router.register('brands', BrandAPIView)
+router.register('categories', CategoryAPIView)
+router.register('genders', GenderAPIView)
+
 urlpatterns = [
-    path('productlist/', ProductAPIView.as_view()),
-    path('product/<int:id>', RetrieveProductAPIView.as_view()),
-    path('productupdate/<int:id>', RetrieveUpdateDestroyProductAPIView.as_view()),
+    path('', include(router.urls)),
+    path('orders/', OrderListAPIView.as_view()),
+    path('orders/delete/<int:id>', OrderCancelAPIView.as_view()),
+    path('orders/create/', OrderCreateAPIView.as_view())
 
-    path('brandlist/', BrandAPIView.as_view()),
-    path('brand/<int:id>', RetrieveBrandAPIView.as_view()),
-    path('brandupdate/<int:id>', RetrieveUpdateDestroyBrandAPIView.as_view()),
-
-    path('categorylist/', CategoryAPIView.as_view()),
-    path('category/<int:id>', RetrieveCategoryAPIView.as_view()),
-    path('categoryupdate/<int:id>', RetrieveUpdateDestroyCategoryAPIView.as_view()),
-
-    path('genderlist/', GenderAPIView.as_view()),
-    path('gender/<int:id>', RetrieveGenderAPIView.as_view()),
-    path('genderupdate/<int:id>', RetrieveUpdateDestroyGenderAPIView.as_view()),
-
-    path('orderlist/', OrderListAPIView.as_view()),
-    path('order/<int:id>', RetrieveOrderAPIView.as_view())
 ]
