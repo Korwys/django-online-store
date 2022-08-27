@@ -9,38 +9,44 @@ from wishapp.models import WishList
 class BrandSerializer(serializers.ModelSerializer):
     class Meta:
         model = Brand
-        fields = '__all__'
+        fields = ('id', 'name')
+
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductCategory
-        fields = '__all__'
+        fields = ('id', 'name', 'description')
+
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = '__all__'
+        fields = ('id', 'name', 'category', 'brand', 'price', 'gender')
 
 
 class GenderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genders
-        fields = '__all__'
+        fields = ('name',)
 
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
-        fields = '__all__'
+        fields = ('id', 'created_at', 'updated_at', 'status')
 
 
 class WishlistSerializer(serializers.ModelSerializer):
+    product = ProductSerializer()
+
     class Meta:
         model = WishList
-        fields = '__all__'
+        fields = ('product',)
 
 
 class CartSerializer(serializers.ModelSerializer):
+    product = ProductSerializer()
+
     class Meta:
         model = Cart
-        fields = '__all__'
+        fields = ('product', 'quantity')

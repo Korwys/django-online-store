@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django_filters',
     'crispy_forms',
     'rest_framework',
+    'rest_framework.authtoken',
+    'djoser',
 
     'mainapp',
     'productapp',

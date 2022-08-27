@@ -25,7 +25,7 @@ def remove_selected_product(pk: int) -> None:
         product.delete()
     except TypeError as e:
         logger.error(e)
-        print('ok')
+
 
 
 def count_whishlist_products_by_user(request) -> int:

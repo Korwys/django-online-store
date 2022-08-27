@@ -1,18 +1,18 @@
-from rest_framework.generics import ListAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView, DestroyAPIView, \
-    CreateAPIView
+from rest_framework.generics import ListAPIView, DestroyAPIView, CreateAPIView, UpdateAPIView
 from rest_framework.filters import SearchFilter
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from django.shortcuts import get_object_or_404
-from django.utils.timezone import now
 
 from cartapp.models import Cart
-from cartapp.services.crud import get_cart_products_by_user
-from orderapp.models import Order, OrderItem
+from cartapp.services.crud import  add_selected_product_in_cart, change_product_quantity, \
+    remove_selected_product_from_cart
+from orderapp.models import Order
+from orderapp.services.crud import change_order_status, transfer_products_from_cart_to_orderitem
 from wishapp.models import WishList
+from wishapp.services.crud import save_selected_product, remove_selected_product
 from .permissions import IsStaffOrReadOnly
 from .serializers import ProductSerializer, BrandSerializer, CategorySerializer, GenderSerializer, OrderSerializer, \
     WishlistSerializer, CartSerializer
@@ -65,17 +65,14 @@ class OrderCancelAPIView(DestroyAPIView):
     permission_classes = [IsAuthenticated]
 
     def delete(self, request, *args, **kwargs):
-        user = self.request.user
-        user_orders = Order.objects.filter(user=user)
-        select_user_order = get_object_or_404(user_orders, pk=kwargs['id'])
-        select_user_order.status = 'CNL'
-        select_user_order.is_active = False
-        select_user_order.save()
+        pk = kwargs['id']
+        change_order_status(pk)
         return Response(status=status.HTTP_200_OK, data={'message': 'Заказ удален'})
 
 
 class OrderCreateAPIView(CreateAPIView):
     queryset = Order.objects.all()
+    permission_classes = [IsAuthenticated, ]
 
     def post(self, request, *args, **kwargs):
         user = self.request.user
@@ -86,16 +83,83 @@ class OrderCreateAPIView(CreateAPIView):
             postal_code=request.POST.get('postal_code'),
             status='PD',
             is_active=True,
-            created_at= now(),
-            updated_at=now(),
         )
 
-        cart = get_cart_products_by_user(request)
-        for item in cart:
-            OrderItem.objects.create(order=new_user_order, product=item.product, quantity=item.quantity)
-        cart.delete()
+        transfer_products_from_cart_to_orderitem(request, new_user_order)
         return Response(status=status.HTTP_200_OK, data={'message': 'Заказ создан'})
 
 
+class WishListAPIView(ListAPIView):
+    serializer_class = WishlistSerializer
+    permission_classes = [IsAuthenticated, ]
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_anonymous:
+            raise PermissionDenied(detail='Вы не вошли в личный кабинет')
+        else:
+            return WishList.objects.filter(user=user)
 
 
+class WishlistAddAPIView(CreateAPIView):
+    serializer_class = WishlistSerializer
+    permission_classes = [IsAuthenticated, ]
+
+    def post(self, request, *args, **kwargs):
+        pk = kwargs['id']
+        save_selected_product(request, pk)
+
+        return Response(status=status.HTTP_200_OK, data={'message': 'Товар добавлен в избранное'})
+
+
+class WishlistDeleteItemAPIView(DestroyAPIView):
+    serializer_class = WishlistSerializer
+    permission_classes = [IsAuthenticated, ]
+
+    def delete(self, request, *args, **kwargs):
+        pk = kwargs['id']
+        remove_selected_product(pk)
+
+        return Response(status=status.HTTP_200_OK, data={'message': 'Товар удален из избранного'})
+
+
+class CartListAPIView(ListAPIView):
+    serializer_class = CartSerializer
+    permission_classes = [IsAuthenticated, ]
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_anonymous:
+            raise PermissionDenied(detail='Вы не вошли в личный кабинет')
+        else:
+            return Cart.objects.filter(user=user)
+
+
+class CartAddAPIView(CreateAPIView):
+    serializer_class = CartSerializer
+    permission_classes = [IsAuthenticated, ]
+
+    def post(self, request, *args, **kwargs):
+        pk = kwargs['id']
+        add_selected_product_in_cart(request, pk)
+        return Response(status=status.HTTP_200_OK, data={'message': 'Товар добавлен в корзину'})
+
+
+class CartUpdateAPIView(UpdateAPIView):
+    serializer_class = CartSerializer
+    permission_classes = [IsAuthenticated, ]
+
+    def put(self, request, *args, **kwargs):
+        pk = kwargs['id']
+        quantity = kwargs['quantity']
+        change_product_quantity(request, pk, quantity)
+
+
+class CartDeleteAPIView(DestroyAPIView):
+    serializer_class = CartSerializer
+    permission_classes = [IsAuthenticated, ]
+
+    def delete(self, request, *args, **kwargs):
+        pk = kwargs['id']
+        remove_selected_product_from_cart(pk)
+        return Response(status=status.HTTP_200_OK, data={'message': 'Товар удален из корзины'})
