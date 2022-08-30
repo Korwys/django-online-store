@@ -16,6 +16,7 @@ router.register('genders', GenderAPIView)
 urlpatterns = [
     path('', include(router.urls)),
 
+
     path('orders/', OrderListAPIView.as_view()),
     path('orders/delete/<int:id>', OrderCancelAPIView.as_view()),
     path('orders/create/', OrderCreateAPIView.as_view()),

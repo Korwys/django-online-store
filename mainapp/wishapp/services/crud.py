@@ -27,7 +27,6 @@ def remove_selected_product(pk: int) -> None:
         logger.error(e)
 
 
-
 def count_whishlist_products_by_user(request) -> int:
     """Возвращает количество товаров в избранном"""
     return WishList.objects.filter(user=request.user).count()

@@ -12,6 +12,8 @@ urlpatterns = [
     path('contacts/', contacts, name='contacts'),
     path('about/', about, name='about'),
     path('api/v1/', include('api.urls', namespace='api')),
+
+    path('api/v1/auth/',include('rest_framework.urls')),
     path('products/', include('productapp.urls', namespace='products')),
     path('cart/', include('cartapp.urls', namespace='cart')),
     path('auth/', include('authapp.urls', namespace='auth')),

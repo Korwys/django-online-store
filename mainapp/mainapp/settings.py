@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'crispy_forms',
     'rest_framework',
     'rest_framework.authtoken',
-    'djoser',
 
     'mainapp',
     'productapp',
